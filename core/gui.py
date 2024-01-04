@@ -1,7 +1,7 @@
 from uuid import uuid4
 import pygame
-from square import Square
-from game import Game
+from core.square import Square
+from core.game import Game
 from os import path
 
 class Interface():
@@ -53,6 +53,12 @@ class Interface():
         for i in self.__squares:
             if self.__squares[i].getPiece() != None:
                 self.__images[self.__squares[i].getPiece()] = pygame.transform.scale(pygame.image.load(path.join('assets', 'pieces', self.__squares[i].getPiece()+'.png')), (self.__squares[i].getStats()[2], self.__squares[i].getStats()[3]))
+        self.__images['dot_b'] = pygame.transform.scale(pygame.image.load(path.join('assets', 'dots', 'blue_dot.png')), (self.__squares['A1'].getStats()[2], self.__squares['A1'].getStats()[3]))
+        self.__images['dot_b_half'] = pygame.transform.scale(pygame.image.load(path.join('assets', 'dots', 'blue_dot_50%.png')), (self.__squares['A1'].getStats()[2], self.__squares['A1'].getStats()[3]))
+        self.__images['dot_g'] = pygame.transform.scale(pygame.image.load(path.join('assets', 'dots', 'green_dot.png')), (self.__squares['A1'].getStats()[2]/2, self.__squares['A1'].getStats()[3]/2))
+        self.__images['dot_g_half'] = pygame.transform.scale(pygame.image.load(path.join('assets', 'dots', 'green_dot_50%.png')), (self.__squares['A1'].getStats()[2]/2, self.__squares['A1'].getStats()[3]/2))
+        self.__images['dot_r'] = pygame.transform.scale(pygame.image.load(path.join('assets', 'dots', 'red_dot.png')), (self.__squares['A1'].getStats()[2], self.__squares['A1'].getStats()[3]))
+        self.__images['dot_r_half'] = pygame.transform.scale(pygame.image.load(path.join('assets', 'dots', 'red_dot_50%.png')), (self.__squares['A1'].getStats()[2], self.__squares['A1'].getStats()[3]))
         print(self.__images)
 
     def start(self):
@@ -87,31 +93,20 @@ class Interface():
                 pygame.draw.rect(screen, self.__squares[i].getColor(), pygame.Rect(self.__squares[i].getStats()))
                 if self.__squares[i].getPiece() != None:
                     screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-            # for i in range(0, 8):
-            #     # print('i:', i)
-            #     for j in range(0, 8):
-            #         # print('j: ', j)
-            #         if i % 2 == 0:
-            #             if j % 2 == 0:
-            #                 pygame.draw.rect(screen, "white", pygame.Rect((res_x-res_factor*2)/8*(i+1), (res_y-res_factor*2)/8*(j+1), (res_x-res_factor*2)/8, (res_y-res_factor*2)/8))
-            #             else:
-            #                 pygame.draw.rect(screen, "black", pygame.Rect((res_x-res_factor*2)/8*(i+1), (res_y-res_factor*2)/8*(j+1), (res_x-res_factor*2)/8, (res_y-res_factor*2)/8))
-            #         else:
-            #             if j % 2 == 0:
-            #                 pygame.draw.rect(screen, "black", pygame.Rect((res_x-res_factor*2)/8*(i+1), (res_y-res_factor*2)/8*(j+1), (res_x-res_factor*2)/8, (res_y-res_factor*2)/8))
-            #             else:
-            #                 pygame.draw.rect(screen, "white", pygame.Rect((res_x-res_factor*2)/8*(i+1), (res_y-res_factor*2)/8*(j+1), (res_x-res_factor*2)/8, (res_y-res_factor*2)/8))
-            # print('End')
-            # keys = pygame.key.get_pressed()
-            # if keys[pygame.K_w]:
-            #     player_pos.y -= 300 * dt
-            # if keys[pygame.K_s]:
-            #     player_pos.y += 300 * dt
-            # if keys[pygame.K_a]:
-            #     player_pos.x -= 300 * dt
-            # if keys[pygame.K_d]:
-            #     player_pos.x += 300 * dt
-
+                    # Testing Dots
+                    # if i[0] == 'A':
+                    #     screen.blit(self.__images['dot_b'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                    # elif i[0] == 'B':
+                    #     screen.blit(self.__images['dot_b_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                    # elif i[0] == 'C':
+                    #     screen.blit(self.__images['dot_g'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
+                    # elif i[0] == 'D':
+                    #     screen.blit(self.__images['dot_g_half'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
+                    # elif i[0] == 'E':
+                    #     screen.blit(self.__images['dot_r'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                    # elif i[0] == 'F':
+                    #     screen.blit(self.__images['dot_r_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+            
             # flip() the display to put your work on screen
             pygame.display.flip()
 

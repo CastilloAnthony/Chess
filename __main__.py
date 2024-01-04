@@ -1,5 +1,5 @@
-from game import Game
-from gui import Interface
+from core.game import Game
+from core.gui import Interface
 
 def main():
     guiTest()

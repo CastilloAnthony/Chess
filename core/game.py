@@ -1,5 +1,5 @@
 from uuid import uuid4
-from board import Board
+from core.board import Board
 from pieces.pawn import Pawn
 from pieces.knight import Knight
 from pieces.bishop import Bishop
