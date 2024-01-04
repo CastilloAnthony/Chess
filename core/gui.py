@@ -100,12 +100,12 @@ class Interface():
                     #     screen.blit(self.__images['dot_b_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
                     # elif i[0] == 'C':
                     #     screen.blit(self.__images['dot_g'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
-                    # elif i[0] == 'D':
-                    #     screen.blit(self.__images['dot_g_half'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
+                    if i[0] == 'D' or i[0] == 'A' or i[0] == 'C':
+                        screen.blit(self.__images['dot_g_half'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
                     # elif i[0] == 'E':
                     #     screen.blit(self.__images['dot_r'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                    # elif i[0] == 'F':
-                    #     screen.blit(self.__images['dot_r_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                    elif i[0] == 'F' or i[0] == 'B':
+                        screen.blit(self.__images['dot_r_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
             
             # flip() the display to put your work on screen
             pygame.display.flip()
