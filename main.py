@@ -1,25 +1,7 @@
 from game import Game
 from gui import Interface
-class Parent1:
-    def __init__(self):
-        print("Parent1")
-
-class Parent2:
-    def __init__(self):
-        print("Parent2")
-
-    def test(self):
-        print('Test!')
-
-class Child(Parent1, Parent2):
-    def __init__(self):
-        super().__init__()
-        Parent2.__init__(self)
-        Parent2.test(self)
-        print("Child")
 
 def main():
-    # newChild = Child()
     guiTest()
     # kingTest()
     # knightTest()
@@ -27,6 +9,8 @@ def main():
     # bishopTest()
     # rookTest()
     # pawnTest()
+    # newChild = Child()
+# end main
 
 def guiTest():
     newInterface = Interface()
@@ -144,7 +128,24 @@ def pawnTest():
     newGame.move('C5', 'D6')
     print('Threatens: ', newGame.getTokenThreatens('D6'))
     newGame.displayScore()
-# end main
+
+class Parent1:
+    def __init__(self):
+        print("Parent1")
+
+class Parent2:
+    def __init__(self):
+        print("Parent2")
+
+    def test(self):
+        print('Test!')
+
+class Child(Parent1, Parent2):
+    def __init__(self):
+        super().__init__()
+        Parent2.__init__(self)
+        Parent2.test(self)
+        print("Child")
     
 if __name__ == '__main__':
     main()
