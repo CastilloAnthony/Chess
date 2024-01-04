@@ -1,0 +1,10 @@
+Add En Passante to Pawns # Completed.
+    White East Complete
+    White West Test
+    Black West Test
+    Black East Test
+Figure out how to pin a piece
+Fix King's threatening
+GUI
+    Inprogress...
+AI (Min/Max, BFS)
