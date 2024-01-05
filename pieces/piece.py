@@ -28,14 +28,14 @@ class Piece():
         return info
     
     def getStatus(self):
-        info = [
-            self.__id,
-            self.__name,
-            self.__team,
-            self.__value,
-            self.__initial,
-            self.__position,
-        ]
+        info = {
+            'id':self.__id,
+            'name':self.__name,
+            'team':self.__team,
+            'value':self.__value,
+            'initial':self.__initial,
+            'position':self.__position,
+        }
         return info
     
     def listMoves(self, board):

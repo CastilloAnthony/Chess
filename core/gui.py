@@ -77,38 +77,90 @@ class Interface():
         # print(res_x, res_factor, (res_x-res_factor*2)/8)
         newGame = Game()
         newGame.newGame()
-        
+        updateScreen = True
+        currentPos = None
         while running:
             # poll for events
             # pygame.QUIT event means the user clicked X to close your window
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    pos = pygame.mouse.get_pos()
+                    if not (pos[0] < self.__res_factor or pos[1] < self.__res_factor or pos[0] > self.__res_factor*9 or pos[1] > self.__res_factor*9):
+                        for i in self.__squares:
+                            if self.__squares[i].getStats()[0] < pos[0] < self.__squares[i].getStats()[0]+self.__res_factor:
+                                if self.__squares[i].getStats()[1] < pos[1] < self.__squares[i].getStats()[1]+self.__res_factor:
+                                    if currentPos == i:
+                                        currentPos = None
+                                        updateScreen = True
+                                    else:
+                                        currentPos = i
+                                        updateScreen = True
+                    else:
+                        currentPos = None
+                        updateScreen = True
+                        # for x in self.__x:
+                        #     if pos[0] > self.__squares[x+'8'].getStats()[0]:
+                        #         for y in reversed(self.__y):
+                        #             if pos[1] > self.__squares[x+str(9-int(y))].getStats()[1]:
+                        #                 currentPos = x+str(9-int(y))
+                        #                 print(currentPos)
+                        #                 updateScreen = True
+                        #             if x == 'H' and y == '1':
+                        #                 currentPos = 'H1'
+                        #                 print(currentPos)
+                        #                 updateScreen = True
+                                
+                    # print(currentPos)
+                    # print(pos)
+                    # print(event.dict)
             # fill the screen with a color to wipe away anything from last frame
             # screen.fill("darkgray")
-            screen.fill(pygame.Color(100, 100, 100, a=255))
-            self.loadPieces(newGame.getBoard())
-            for i in self.__squares:
-                pygame.draw.rect(screen, self.__squares[i].getColor(), pygame.Rect(self.__squares[i].getStats()))
-                if self.__squares[i].getPiece() != None:
-                    screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                    # Testing Dots
-                    # if i[0] == 'A':
-                    #     screen.blit(self.__images['dot_b'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                    # elif i[0] == 'B':
-                    #     screen.blit(self.__images['dot_b_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                    # elif i[0] == 'C':
-                    #     screen.blit(self.__images['dot_g'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
-                    if i[0] == 'D' or i[0] == 'A' or i[0] == 'C':
-                        screen.blit(self.__images['dot_g_half'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
-                    # elif i[0] == 'E':
-                    #     screen.blit(self.__images['dot_r'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                    elif i[0] == 'F' or i[0] == 'B':
-                        screen.blit(self.__images['dot_r_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-            
-            # flip() the display to put your work on screen
-            pygame.display.flip()
+            if updateScreen:
+                screen.fill(pygame.Color(100, 100, 100, a=255))
+                self.loadPieces(newGame.getBoard())
+                for i in self.__squares:
+                    pygame.draw.rect(screen, self.__squares[i].getColor(), pygame.Rect(self.__squares[i].getStats()))
+                for i in self.__squares:
+                    if self.__squares[i].getPiece() != None:
+                        if currentPos == i:
+                            screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
+                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                            print(newGame.getTokenMoves(i))
+                            for j in newGame.getTokenMoves(i):
+                                print(j)
+                                # print(newGame.getBoard()[j])
+                                if newGame.getBoard()[j] != 'Empty\t\t':
+                                    # print(newGame.getBoard())
+                                    # print(i, newGame.getTokenStatus(i)['team'])
+                                    if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(i)['team']:
+                                        screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
+                                    else:
+                                        screen.blit(self.__images['dot_b_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
+                                else:
+                                    screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))
+                        else:
+                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                        
+                        # Testing Dots
+                        # if i[0] == 'A':
+                        #     screen.blit(self.__images['dot_b'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                        # elif i[0] == 'B':
+                        #     screen.blit(self.__images['dot_b_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                        # elif i[0] == 'C':
+                        #     screen.blit(self.__images['dot_g'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
+                        # if i[0] == 'D' or i[0] == 'A' or i[0] == 'C':
+                        #     screen.blit(self.__images['dot_g_half'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
+                        # elif i[0] == 'E':
+                        #     screen.blit(self.__images['dot_r'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                        # elif i[0] == 'F' or i[0] == 'B':
+                        #     screen.blit(self.__images['dot_r_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                
+                # flip() the display to put your work on screen
+                
+                pygame.display.flip()
+                updateScreen = False
 
             # limits FPS to 60
             # dt is delta time in seconds since last frame, used for framerate-

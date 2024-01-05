@@ -6,6 +6,7 @@ class Square():
         self.__w = w
         self.__h = h
         self.__piece = None
+        self.__pieceID = None
 
     def __del__(self):
         del self.__color, self.__x, self.__y, self.__w, self.__h, self.__piece
@@ -21,4 +22,10 @@ class Square():
 
     def getPiece(self):
         return self.__piece
+    
+    def setPieceID(self, ID):
+        self.__pieceID = ID
+
+    def getPieceID(self):
+        return self.__pieceID
 # end Square

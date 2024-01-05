@@ -123,6 +123,9 @@ class Game():
     def getTokenThreatens(self, position:str):
         return self.__board.getTokenThreats(position)
     
+    def getTokenStatus(self, position:str):
+        return self.__board.getPositionInfo(position)
+    
     def move(self, startPos, endPos):
         self.__board.movePiece(startPos, endPos)
         print(self.__board)
