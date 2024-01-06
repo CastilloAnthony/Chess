@@ -63,6 +63,7 @@ class Interface():
 
     def start(self):
         pygame.init()
+        pygame.display.set_caption('Chess')
         # guiScale = 1.2
         # res_factor = 82*guiScale
         # res_x, res_y = 10*res_factor, 10*res_factor
@@ -91,37 +92,29 @@ class Interface():
                         for i in self.__squares:
                             if self.__squares[i].getStats()[0] < pos[0] < self.__squares[i].getStats()[0]+self.__res_factor:
                                 if self.__squares[i].getStats()[1] < pos[1] < self.__squares[i].getStats()[1]+self.__res_factor:
-                                    if currentPos == i:
+                                    if i == currentPos:
+                                        currentPos = None
+                                        updateScreen = True
+                                    elif currentPos == None:
+                                        currentPos = i
+                                        updateScreen = True
+                                    elif newGame.getTokenMoves(currentPos) != None and i in newGame.getTokenMoves(currentPos):
+                                        newGame.move(currentPos, i)
                                         currentPos = None
                                         updateScreen = True
                                     else:
-                                        currentPos = i
+                                        currentPos = None
                                         updateScreen = True
                     else:
                         currentPos = None
                         updateScreen = True
-                        # for x in self.__x:
-                        #     if pos[0] > self.__squares[x+'8'].getStats()[0]:
-                        #         for y in reversed(self.__y):
-                        #             if pos[1] > self.__squares[x+str(9-int(y))].getStats()[1]:
-                        #                 currentPos = x+str(9-int(y))
-                        #                 print(currentPos)
-                        #                 updateScreen = True
-                        #             if x == 'H' and y == '1':
-                        #                 currentPos = 'H1'
-                        #                 print(currentPos)
-                        #                 updateScreen = True
-                                
-                    # print(currentPos)
-                    # print(pos)
-                    # print(event.dict)
-            # fill the screen with a color to wipe away anything from last frame
-            # screen.fill("darkgray")
-            if updateScreen:
-                screen.fill(pygame.Color(100, 100, 100, a=255))
+            if updateScreen: # For screen updates
                 self.loadPieces(newGame.getBoard())
+                screen.fill(pygame.Color(100, 100, 100, a=255))
+                # Redraw Board
                 for i in self.__squares:
                     pygame.draw.rect(screen, self.__squares[i].getColor(), pygame.Rect(self.__squares[i].getStats()))
+                # Draw Pieces and dots
                 for i in self.__squares:
                     if self.__squares[i].getPiece() != None:
                         if currentPos == i:
@@ -158,7 +151,10 @@ class Interface():
                         #     screen.blit(self.__images['dot_r_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
                 
                 # flip() the display to put your work on screen
-                
+                score = pygame.font.SysFont("Times New Roman", round(32*self.__guiScale)).render("White: "+str(newGame.getScore()[True])+"   Black: "+str(newGame.getScore()[False]), True, (0, 0, 0))
+                screen.blit(score, (self.__res_x/2-score.get_width()/2, self.__res_factor/2-score.get_height()/2))
+                id = pygame.font.SysFont("Times New Roman", round (12*self.__guiScale)).render(str(newGame.getBoardID()), True, (0, 0, 0))
+                screen.blit(id, (0, 0))
                 pygame.display.flip()
                 updateScreen = False
 

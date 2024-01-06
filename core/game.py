@@ -21,6 +21,9 @@ class Game():
     def getBoard(self):
         return self.__board.getBoard()
     
+    def getBoardID(self):
+        return self.__board.getID()
+    
     def newGame(self):
         del self.__board
         self.__board = Board()
@@ -133,6 +136,14 @@ class Game():
     def displayBoard(self):
         print(self.__board)
 
+    def getScore(self):
+        return self.__board.getScore()
+    
     def displayScore(self):
         print('\t--- Score ---\n' + 'White: ' + str(self.__board.getScore()[True]) + '\nBlack: ' + str(self.__board.getScore()[False]))
+
+    def findChecks(self):
+        for i in self.__board:
+            if self.__board.getPositionToken(i) != None:
+                pass
 # end Game

@@ -39,7 +39,7 @@ class Rook(Piece):
                     break
         if xPos > 0:
             # print('West')
-            for i in reversed(range(0, xPos-1)):
+            for i in reversed(range(0, xPos)):
                 if board.getPositionToken(x[i]+self.getPos()[1]) == None:
                     validMoves.append(x[i]+self.getPos()[1])
                     pass
@@ -97,7 +97,7 @@ class Rook(Piece):
                     break
         if xPos > 0:
             # print('West')
-            for i in reversed(range(0, xPos-1)):
+            for i in reversed(range(0, xPos)):
                 if board.getPositionToken(x[i]+self.getPos()[1]) == None:
                     threat.append(x[i]+self.getPos()[1])
                     pass

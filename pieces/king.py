@@ -167,10 +167,10 @@ class King(Queen, Piece):
         for index, value in enumerate(board.getBoard()):
             if board.getTokenThreats(value) != None:
                 if board.getPositionToken(value).getTeam() != self.getTeam():
-                    if board.getPositionToken(value).getName() != 'King':
-                        for i in board.getTokenThreats(value):
-                            if i not in threatenedSquares:
-                                threatenedSquares.append(i)
+                    # if board.getPositionToken(value).getName() != 'King':
+                    for i in board.getTokenThreats(value):
+                        if i not in threatenedSquares:
+                            threatenedSquares.append(i)
         return threatenedSquares
 
     def check(self, board):

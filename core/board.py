@@ -84,33 +84,58 @@ class Board():
             return None
         
     def movePiece(self, startPos, endPos):
-        try:
-            if endPos in self.__board[startPos].listMoves(deepcopy(self)):
-                if self.__board[endPos] != 'Empty\t\t': # Taking a Piece
-                    self.__score[self.__board[startPos].getTeam()] += self.__board[endPos].getValue()
-                    self.__graveyard.append(self.__board[endPos])
-                    self.__board[endPos] = 'Empty\t\t'
-                if self.__board[startPos].getName() == 'Pawn': # Check for En Passant
-                    if self.__board[startPos].getEnPassant():
-                        if self.__board[startPos].getTeam(): # White En Passant
-                            self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])-1)].getValue()
-                            self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])-1)])
-                            self.__board[endPos[0]+str(int(endPos[1])-1)] = 'Empty\t\t'
-                        else: # Black En Passant
-                            self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])+1)].getValue()
-                            self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])+1)])
-                            self.__board[endPos[0]+str(int(endPos[1])+1)] = 'Empty\t\t'
-                self.__board[endPos] = self.__board[startPos]
-                self.__board[endPos].setPos(endPos)
-                self.__board[startPos] = 'Empty\t\t'
-                if self.__board[endPos].getInitial():
-                    self.__board[endPos].flipInitial()
-                self.__history.append(deepcopy(self.__board))
-                return True
-            else:
-                return False
-        except:
+        if endPos in self.__board[startPos].listMoves(deepcopy(self)):
+            if self.__board[endPos] != 'Empty\t\t': # Taking a Piece
+                self.__score[self.__board[startPos].getTeam()] += self.__board[endPos].getValue()
+                self.__graveyard.append(self.__board[endPos])
+                self.__board[endPos] = 'Empty\t\t'
+            elif self.__board[startPos].getName() == 'Pawn': # Check for En Passant
+                if self.__board[startPos].getEnPassant():
+                    if self.__board[startPos].getTeam(): # White En Passant
+                        self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])-1)].getValue()
+                        self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])-1)])
+                        self.__board[endPos[0]+str(int(endPos[1])-1)] = 'Empty\t\t'
+                    else: # Black En Passant
+                        self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])+1)].getValue()
+                        self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])+1)])
+                        self.__board[endPos[0]+str(int(endPos[1])+1)] = 'Empty\t\t'
+            self.__board[endPos] = self.__board[startPos]
+            print(startPos, self.__board[startPos], endPos, self.__board[endPos])
+            self.__board[endPos].setPos(endPos)
+            self.__board[startPos] = 'Empty\t\t'
+            if self.__board[endPos].getInitial():
+                self.__board[endPos].flipInitial()
+            self.__history.append(deepcopy(self.__board))
+            return True
+        else:
             return False
+        # try:
+        #     if endPos in self.__board[startPos].listMoves(deepcopy(self)):
+        #         if self.__board[endPos] != 'Empty\t\t': # Taking a Piece
+        #             self.__score[self.__board[startPos].getTeam()] += self.__board[endPos].getValue()
+        #             self.__graveyard.append(self.__board[endPos])
+        #             self.__board[endPos] = 'Empty\t\t'
+        #         if self.__board[startPos].getName() == 'Pawn': # Check for En Passant
+        #             if self.__board[startPos].getEnPassant():
+        #                 if self.__board[startPos].getTeam(): # White En Passant
+        #                     self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])-1)].getValue()
+        #                     self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])-1)])
+        #                     self.__board[endPos[0]+str(int(endPos[1])-1)] = 'Empty\t\t'
+        #                 else: # Black En Passant
+        #                     self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])+1)].getValue()
+        #                     self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])+1)])
+        #                     self.__board[endPos[0]+str(int(endPos[1])+1)] = 'Empty\t\t'
+        #         self.__board[endPos] = self.__board[startPos]
+        #         self.__board[endPos].setPos(endPos)
+        #         self.__board[startPos] = 'Empty\t\t'
+        #         if self.__board[endPos].getInitial():
+        #             self.__board[endPos].flipInitial()
+        #         self.__history.append(deepcopy(self.__board))
+        #         return True
+        #     else:
+        #         return False
+        # except:
+        #     return False
         
     def snapshotBoard(self):
         self.__history.append(deepcopy(self.__board))
