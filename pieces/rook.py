@@ -23,7 +23,8 @@ class Rook(Piece):
                 if board.getPositionToken(self.getPos()[0]+str(i)) == None:
                     validMoves.append(self.getPos()[0]+str(i))
                 elif board.getPositionToken(self.getPos()[0]+str(i)).getTeam() != self.getTeam():
-                    validMoves.append(self.getPos()[0]+str(i))
+                    if board.getPositionToken(self.getPos()[0]+str(i)).getName() != 'King':
+                        validMoves.append(self.getPos()[0]+str(i))
                     break
                 else:
                     break
@@ -33,7 +34,8 @@ class Rook(Piece):
                 if board.getPositionToken(self.getPos()[0]+str(i)) == None:
                     validMoves.append(self.getPos()[0]+str(i))
                 elif board.getPositionToken(self.getPos()[0]+str(i)).getTeam() != self.getTeam():
-                    validMoves.append(self.getPos()[0]+str(i))
+                    if board.getPositionToken(self.getPos()[0]+str(i)).getName() != 'King':
+                        validMoves.append(self.getPos()[0]+str(i))
                     break
                 else:
                     break
@@ -44,7 +46,8 @@ class Rook(Piece):
                     validMoves.append(x[i]+self.getPos()[1])
                     pass
                 elif board.getPositionToken(x[i]+self.getPos()[1]).getTeam() != self.getTeam():
-                    validMoves.append(x[i]+self.getPos()[1])
+                    if board.getPositionToken(x[i]+self.getPos()[1]).getName() != 'King':
+                        validMoves.append(x[i]+self.getPos()[1])
                     break
                 else:
                     break
@@ -54,7 +57,8 @@ class Rook(Piece):
                 if board.getPositionToken(x[i]+self.getPos()[1]) == None:
                     validMoves.append(x[i]+self.getPos()[1])
                 elif board.getPositionToken(x[i]+self.getPos()[1]).getTeam() != self.getTeam():
-                    validMoves.append(x[i]+self.getPos()[1])
+                    if board.getPositionToken(x[i]+self.getPos()[1]).getName() != 'King':
+                        validMoves.append(x[i]+self.getPos()[1])
                     break
                 else:
                     break

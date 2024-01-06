@@ -64,22 +64,14 @@ class Interface():
     def start(self):
         pygame.init()
         pygame.display.set_caption('Chess')
-        # guiScale = 1.2
-        # res_factor = 82*guiScale
-        # res_x, res_y = 10*res_factor, 10*res_factor
-        # res_x, res_y = 1280, 720
-        # res_x, res_y = 16*res_factor, 9*res_factor
-        
         screen = pygame.display.set_mode((self.__res_x, self.__res_y))
         clock = pygame.time.Clock()
         running = True
-        # dt = 0
-        # player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-        # print(res_x, res_factor, (res_x-res_factor*2)/8)
         newGame = Game()
         newGame.newGame()
         updateScreen = True
         currentPos = None
+        debug = True
         while running:
             # poll for events
             # pygame.QUIT event means the user clicked X to close your window
@@ -114,55 +106,44 @@ class Interface():
                 # Redraw Board
                 for i in self.__squares:
                     pygame.draw.rect(screen, self.__squares[i].getColor(), pygame.Rect(self.__squares[i].getStats()))
+                # Margin, Bottom
+                for index, x in enumerate(self.__x):
+                    text = pygame.font.SysFont("Times New Roman", round (18*self.__guiScale)).render(x, True, (0, 0, 0))
+                    screen.blit(text, (self.__res_factor+self.__res_factor*int(index)+self.__res_factor/2-text.get_width()/2, self.__res_factor*9))#+text.get_height()*2))#self.__res_factor/10))
+                # Margin, Left
+                for y in self.__y:
+                    text = pygame.font.SysFont("Times New Roman", round (18*self.__guiScale)).render(y, True, (0, 0, 0))
+                    screen.blit(text, (self.__res_factor-text.get_width()*2, self.__res_factor*(9-int(y))+self.__res_factor/2-text.get_height()/2))
                 # Draw Pieces and dots
                 for i in self.__squares:
                     if self.__squares[i].getPiece() != None:
                         if currentPos == i:
                             screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
                             screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                            print(newGame.getTokenMoves(i))
                             for j in newGame.getTokenMoves(i):
-                                print(j)
-                                # print(newGame.getBoard()[j])
                                 if newGame.getBoard()[j] != 'Empty\t\t':
-                                    # print(newGame.getBoard())
-                                    # print(i, newGame.getTokenStatus(i)['team'])
                                     if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(i)['team']:
                                         screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
-                                    else:
+                                    else: # This should never happen
                                         screen.blit(self.__images['dot_b_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
                                 else:
                                     screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))
                         else:
                             screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                        
-                        # Testing Dots
-                        # if i[0] == 'A':
-                        #     screen.blit(self.__images['dot_b'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                        # elif i[0] == 'B':
-                        #     screen.blit(self.__images['dot_b_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                        # elif i[0] == 'C':
-                        #     screen.blit(self.__images['dot_g'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
-                        # if i[0] == 'D' or i[0] == 'A' or i[0] == 'C':
-                        #     screen.blit(self.__images['dot_g_half'], (self.__squares[i].getStats()[0]+self.__res_factor/4, self.__squares[i].getStats()[1]+self.__res_factor/4))
-                        # elif i[0] == 'E':
-                        #     screen.blit(self.__images['dot_r'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                        # elif i[0] == 'F' or i[0] == 'B':
-                        #     screen.blit(self.__images['dot_r_half'], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                
-                # flip() the display to put your work on screen
+                # Drawing info onto the board, score, board id, fps, etc.
                 score = pygame.font.SysFont("Times New Roman", round(32*self.__guiScale)).render("White: "+str(newGame.getScore()[True])+"   Black: "+str(newGame.getScore()[False]), True, (0, 0, 0))
                 screen.blit(score, (self.__res_x/2-score.get_width()/2, self.__res_factor/2-score.get_height()/2))
-                id = pygame.font.SysFont("Times New Roman", round (12*self.__guiScale)).render(str(newGame.getBoardID()), True, (0, 0, 0))
-                screen.blit(id, (0, 0))
+                if debug:
+                    fps = pygame.font.SysFont("Times New Roman", round(12*self.__guiScale)).render('fps: '+str(round(clock.get_fps())), True, (0, 0, 0))
+                    screen.blit(fps, (0, 0))
+                    id = pygame.font.SysFont("Times New Roman", round(12*self.__guiScale)).render('Board ID: '+str(newGame.getBoardID()), True, (0, 0, 0))
+                    screen.blit(id, (0, fps.get_height()))
+                # Update screen
                 pygame.display.flip()
-                updateScreen = False
-
-            # limits FPS to 60
-            # dt is delta time in seconds since last frame, used for framerate-
-            # independent physics.
-            # dt = clock.tick(60) / 1000
-
+                # newGame.calculateThreats()
+                # updateScreen = False
+            # Limits FPS to 60
+            clock.tick(60)
         pygame.quit()
 
     def test(self):

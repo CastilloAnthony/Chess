@@ -25,7 +25,8 @@ class Bishop(Piece):
                     validMoves.append(str(x[xPos-count])+str(int(self.getPos()[1])+count))
                     count += 1
                 elif board.getPositionToken(str(x[xPos-count])+str(int(self.getPos()[1])+count)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos-count])+str(int(self.getPos()[1])+count))
+                    if board.getPositionToken(str(x[xPos-count])+str(int(self.getPos()[1])+count)).getName() != 'King':
+                        validMoves.append(str(x[xPos-count])+str(int(self.getPos()[1])+count))
                     break
                 else:
                     break
@@ -37,7 +38,8 @@ class Bishop(Piece):
                     validMoves.append(str(x[xPos+count])+str(int(self.getPos()[1])+count))
                     count += 1
                 elif board.getPositionToken(str(x[xPos+count])+str(int(self.getPos()[1])+count)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos+count])+str(int(self.getPos()[1])+count))
+                    if board.getPositionToken(str(x[xPos+count])+str(int(self.getPos()[1])+count)).getName() != 'King':
+                        validMoves.append(str(x[xPos+count])+str(int(self.getPos()[1])+count))
                     break
                 else:
                     break
@@ -49,7 +51,8 @@ class Bishop(Piece):
                     validMoves.append(str(x[xPos-count])+str(int(self.getPos()[1])-count))
                     count += 1
                 elif board.getPositionToken(str(x[xPos-count])+str(int(self.getPos()[1])-count)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos-count])+str(int(self.getPos()[1])-count))
+                    if board.getPositionToken(str(x[xPos-count])+str(int(self.getPos()[1])-count)).getName() != 'King':
+                        validMoves.append(str(x[xPos-count])+str(int(self.getPos()[1])-count))
                     break
                 else:
                     break
@@ -61,7 +64,8 @@ class Bishop(Piece):
                     validMoves.append(str(x[xPos+count])+str(int(self.getPos()[1])-count))
                     count += 1
                 elif board.getPositionToken(str(x[xPos+count])+str(int(self.getPos()[1])-count)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos+count])+str(int(self.getPos()[1])-count))
+                    if board.getPositionToken(str(x[xPos+count])+str(int(self.getPos()[1])-count)).getName() != 'King':
+                        validMoves.append(str(x[xPos+count])+str(int(self.getPos()[1])-count))
                     break
                 else:
                     break

@@ -146,4 +146,7 @@ class Game():
         for i in self.__board:
             if self.__board.getPositionToken(i) != None:
                 pass
+
+    def calculateThreats(self):
+        self.__board.calculateThreats()
 # end Game

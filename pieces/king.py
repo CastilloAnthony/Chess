@@ -18,6 +18,7 @@ class King(Queen, Piece):
             if value == self.getPos()[0]:
                 xPos = index
                 break
+        # threatenedSquares = board.getBoardThreats(not self.getTeam())
         threatenedSquares = self.getBoardThreatens(board)
         # print('Detected Threats: ', threatenedSquares)
         if (int(self.getPos()[1]) < 8):
@@ -163,14 +164,17 @@ class King(Queen, Piece):
         return threat
 
     def getBoardThreatens(self, board):
+        selfThreats = self.threatening(board)
         threatenedSquares = []
         for index, value in enumerate(board.getBoard()):
             if board.getTokenThreats(value) != None:
                 if board.getPositionToken(value).getTeam() != self.getTeam():
-                    # if board.getPositionToken(value).getName() != 'King':
                     for i in board.getTokenThreats(value):
-                        if i not in threatenedSquares:
+                        if i in selfThreats:
+                        # if i not in threatenedSquares:
                             threatenedSquares.append(i)
+                        if len(threatenedSquares) == len(selfThreats):
+                            break
         return threatenedSquares
 
     def check(self, board):

@@ -50,20 +50,24 @@ class Pawn(Piece):
                         if self.getTeam(): # White Move
                             if  board.getPositionToken(x[index-1]+str(int(self.getPos()[1])+1)) != None:
                                 if board.getPositionToken(x[index-1]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
-                                    validMoves.append(x[index-1]+str(int(self.getPos()[1])+1))
+                                    if board.getPositionToken(x[index-1]+str(int(self.getPos()[1])+1)).getName() != 'King':
+                                        validMoves.append(x[index-1]+str(int(self.getPos()[1])+1))
                         else: # Black Move
                             if  board.getPositionToken(x[index-1]+str(int(self.getPos()[1])-1)) != None:
                                 if board.getPositionToken(x[index-1]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
-                                    validMoves.append(x[index-1]+str(int(self.getPos()[1])-1))
+                                    if board.getPositionToken(x[index-1]+str(int(self.getPos()[1])-1)).getName() != 'King':
+                                        validMoves.append(x[index-1]+str(int(self.getPos()[1])-1))
                     if value != 'H':
                         if self.getTeam(): # White Move
                             if board.getPositionToken(x[index+1]+str(int(self.getPos()[1])+1)) != None:
                                 if board.getPositionToken(x[index+1]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
-                                    validMoves.append(x[index+1]+str(int(self.getPos()[1])+1))
+                                    if board.getPositionToken(x[index+1]+str(int(self.getPos()[1])+1)).getName() != 'King':
+                                        validMoves.append(x[index+1]+str(int(self.getPos()[1])+1))
                         else: # Black Move
                             if board.getPositionToken(x[index+1]+str(int(self.getPos()[1])-1)) != None:
                                 if board.getPositionToken(x[index+1]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
-                                    validMoves.append(x[index+1]+str(int(self.getPos()[1])-1))
+                                    if board.getPositionToken(x[index+1]+str(int(self.getPos()[1])-1)).getName() != 'King':
+                                        validMoves.append(x[index+1]+str(int(self.getPos()[1])-1))
                     break
             # Add  En Passant
             lastBoard = board.getHistory(-2)

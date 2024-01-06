@@ -13,6 +13,7 @@ class Board():
         self.__score = [0, 0] # [Black, White]/[False, True]
         self.__graveyard = []
         self.__history = []
+        self.__threats = []
         self.__history.append(deepcopy(self.__board))
 
     def __del__(self):
@@ -100,15 +101,17 @@ class Board():
                         self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])+1)])
                         self.__board[endPos[0]+str(int(endPos[1])+1)] = 'Empty\t\t'
             self.__board[endPos] = self.__board[startPos]
-            print(startPos, self.__board[startPos], endPos, self.__board[endPos])
+            # print(startPos, self.__board[startPos], endPos, self.__board[endPos])
             self.__board[endPos].setPos(endPos)
             self.__board[startPos] = 'Empty\t\t'
             if self.__board[endPos].getInitial():
                 self.__board[endPos].flipInitial()
             self.__history.append(deepcopy(self.__board))
+            # self.calculateThreats()
             return True
         else:
             return False
+        
         # try:
         #     if endPos in self.__board[startPos].listMoves(deepcopy(self)):
         #         if self.__board[endPos] != 'Empty\t\t': # Taking a Piece
@@ -142,4 +145,26 @@ class Board():
 
     def getHistory(self, number:int):
         return self.__history[number]
+    
+    def calculateThreats(self):
+        whiteThreats, blackThreats = [], []
+        for i in self.__board:
+            if self.getTokenThreats(i) != None:
+                if self.getPositionToken(i).getTeam():
+                    for j in self.getTokenThreats(i):
+                        if j not in whiteThreats:
+                            whiteThreats.append(j)
+                else:
+                    for j in self.getTokenThreats(i):
+                        if j not in whiteThreats:
+                            blackThreats.append(j)
+        self.__threats = [blackThreats, whiteThreats]
+
+    def getBoardThreats(self, team:bool=None):
+        if team == None:
+            return self.__threats
+        elif team:
+            return self.__threats[team]
+        else:
+            return self.__threats[team]
 # end Board

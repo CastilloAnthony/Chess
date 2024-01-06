@@ -1,7 +1,5 @@
-Remove the King piece from validMoves for all pieces, but keep it in the threatened lists
-
-Fix Knight's movement. Can't go to row 8 or row 1 in some cases
-    Check direct North & South code
+King
+    Fix lag upon clicking a king, caused by getBoardThreatens()
 
 Figure out how to pin a piece
 

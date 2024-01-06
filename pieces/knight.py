@@ -18,34 +18,38 @@ class Knight(Piece):
             if value == self.getPos()[0]:
                 xPos = index
                 break
-        if (int(self.getPos()[1]) < 8-2):
+        if (int(self.getPos()[1]) < 8-1):
             # print('North')
             if (xPos > 0):
                 # print('NorthWest')
                 if board.getPositionToken(str(x[xPos-1])+str(int(self.getPos()[1])+2)) == None:
                     validMoves.append(str(x[xPos-1])+str(int(self.getPos()[1])+2))
                 elif board.getPositionToken(str(x[xPos-1])+str(int(self.getPos()[1])+2)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos-1])+str(int(self.getPos()[1])+2))
+                    if board.getPositionToken(str(x[xPos-1])+str(int(self.getPos()[1])+2)).getName() != 'King':
+                        validMoves.append(str(x[xPos-1])+str(int(self.getPos()[1])+2))
             if (xPos < 7):
                 # print('NorthEast')
                 if board.getPositionToken(str(x[xPos+1])+str(int(self.getPos()[1])+2)) == None:
                     validMoves.append(str(x[xPos+1])+str(int(self.getPos()[1])+2))
                 elif board.getPositionToken(str(x[xPos+1])+str(int(self.getPos()[1])+2)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos+1])+str(int(self.getPos()[1])+2))
-        if (int(self.getPos()[1]) > 1+2):
+                    if board.getPositionToken(str(x[xPos+1])+str(int(self.getPos()[1])+2)).getName() != 'King':
+                        validMoves.append(str(x[xPos+1])+str(int(self.getPos()[1])+2))
+        if (int(self.getPos()[1]) > 1+1):
             # print('South')
             if (xPos > 0):
                 # print('SouthWest')
                 if board.getPositionToken(str(x[xPos-1])+str(int(self.getPos()[1])-2)) == None:
                     validMoves.append(str(x[xPos-1])+str(int(self.getPos()[1])-2))
                 elif board.getPositionToken(str(x[xPos-1])+str(int(self.getPos()[1])-2)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos-1])+str(int(self.getPos()[1])-2))
+                    if board.getPositionToken(str(x[xPos-1])+str(int(self.getPos()[1])-2)).getName() != 'King':
+                        validMoves.append(str(x[xPos-1])+str(int(self.getPos()[1])-2))
             if (xPos < 7):
                 # print('SouthEast')
                 if board.getPositionToken(str(x[xPos+1])+str(int(self.getPos()[1])-2)) == None:
                     validMoves.append(str(x[xPos+1])+str(int(self.getPos()[1])-2))
                 elif board.getPositionToken(str(x[xPos+1])+str(int(self.getPos()[1])-2)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos+1])+str(int(self.getPos()[1])-2))
+                    if board.getPositionToken(str(x[xPos+1])+str(int(self.getPos()[1])-2)).getName() != 'King':
+                        validMoves.append(str(x[xPos+1])+str(int(self.getPos()[1])-2))
         if (xPos > 0+1):
             # print('West')
             if (int(self.getPos()[1]) < 8):
@@ -53,13 +57,15 @@ class Knight(Piece):
                 if board.getPositionToken(str(x[xPos-2])+str(int(self.getPos()[1])+1)) == None:
                     validMoves.append(str(x[xPos-2])+str(int(self.getPos()[1])+1))
                 elif board.getPositionToken(str(x[xPos-2])+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos-2])+str(int(self.getPos()[1])+1))
+                    if board.getPositionToken(str(x[xPos-2])+str(int(self.getPos()[1])+1)).getName() != 'King':
+                        validMoves.append(str(x[xPos-2])+str(int(self.getPos()[1])+1))
             if (int(self.getPos()[1]) > 1):
                 # print('WestSouth')
                 if board.getPositionToken(str(x[xPos-2])+str(int(self.getPos()[1])-1)) == None:
                     validMoves.append(str(x[xPos-2])+str(int(self.getPos()[1])-1))
                 elif board.getPositionToken(str(x[xPos-2])+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos-2])+str(int(self.getPos()[1])-1))
+                    if board.getPositionToken(str(x[xPos-2])+str(int(self.getPos()[1])-1)).getName() != 'King':
+                        validMoves.append(str(x[xPos-2])+str(int(self.getPos()[1])-1))
         if (xPos < 7-1):
             # print('East')
             if (int(self.getPos()[1]) < 8):
@@ -67,13 +73,15 @@ class Knight(Piece):
                 if board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])+1)) == None:
                     validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])+1))
                 elif board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])+1))
+                    if board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])+1)).getName() != 'King':
+                        validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])+1))
             if (int(self.getPos()[1]) > 1):
                 # print('EastSouth')
                 if board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])-1)) == None:
                     validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])-1))
                 elif board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
-                    validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])-1))
+                    if board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])-1)).getName() != 'King':
+                        validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])-1))
         return validMoves
     
     def threatening(self, board):
