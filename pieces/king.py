@@ -7,6 +7,11 @@ class King(Queen, Piece):
         self.setName('King')
         self.setTeam(team) # True/False White/Black
         self.setValue(100)
+        self.__threatenedSquares = []
+
+    def __del__(self):
+        del self.__threatenedSquares
+        super().__del__()
 
     def listMoves(self, board):
         validMoves = []
@@ -164,6 +169,9 @@ class King(Queen, Piece):
         return threat
 
     def getBoardThreatens(self, board):
+        return self.__threatenedSquares
+    
+    def calculateThreats(self, board):
         selfThreats = self.threatening(board)
         threatenedSquares = []
         for index, value in enumerate(board.getBoard()):
@@ -171,11 +179,11 @@ class King(Queen, Piece):
                 if board.getPositionToken(value).getTeam() != self.getTeam():
                     for i in board.getTokenThreats(value):
                         if i in selfThreats:
-                        # if i not in threatenedSquares:
-                            threatenedSquares.append(i)
+                            if i not in threatenedSquares:
+                                threatenedSquares.append(i)
                         if len(threatenedSquares) == len(selfThreats):
                             break
-        return threatenedSquares
+        self.__threatenedSquares = threatenedSquares
 
     def check(self, board):
         threat = self.getBoardThreatens(board)

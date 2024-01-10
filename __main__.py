@@ -1,7 +1,9 @@
 from core.game import Game
 from core.gui import Interface
+import threading
 
 def main():
+    # threadTest()
     guiTest()
     # kingTest()
     # knightTest()
@@ -133,19 +135,38 @@ class Parent1:
     def __init__(self):
         print("Parent1")
 
+    def test(self):
+        print('Test 1!')
+
 class Parent2:
     def __init__(self):
         print("Parent2")
 
     def test(self):
-        print('Test!')
+        print('Test 2!')
 
 class Child(Parent1, Parent2):
     def __init__(self):
         super().__init__()
         Parent2.__init__(self)
+        Parent1.test(self)
         Parent2.test(self)
         print("Child")
+        self.__test = 'temp'
+
+    def set(self, info):
+        self.__test = info
+        return self.__test
+
+    def get(self):
+        return self.__test
     
+def threadTest():
+    newChild = Child()
+    print(newChild.get())
+    thread = threading.Thread(name='Info Setter',target=newChild.set, kwargs={'info':'testing threading'})
+    thread.start()
+    #print(newChild.get())
+
 if __name__ == '__main__':
     main()

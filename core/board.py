@@ -1,6 +1,6 @@
 from uuid import uuid4
 from copy import deepcopy
-
+from threading import Thread
 class Board():
     def __init__(self):
         self.__id = uuid4()
@@ -159,6 +159,17 @@ class Board():
                         if j not in whiteThreats:
                             blackThreats.append(j)
         self.__threats = [blackThreats, whiteThreats]
+
+    def calculateKing(self, position:str):
+        print(self.__board[position])
+        if self.__board[position] != 'Empty\t\t':
+            if 'King' in self.__board[position].getName():
+                thread = Thread(target=self.__board[position].calculateThreats, name=self.__board[position].getName(), args=(deepcopy(self),))
+                thread.start()
+                return thread
+                # self.__board[position].calculateThreats(deepcopy(self))
+        else:
+            return Thread()
 
     def getBoardThreats(self, team:bool=None):
         if team == None:

@@ -11,6 +11,7 @@ class Game():
     def __init__(self):
         self.__id = uuid4
         self.__board = Board()
+        self.__currentTurn = True # True/False White/Black
 
     def __del__(self):
         del self.__board
@@ -130,8 +131,9 @@ class Game():
         return self.__board.getPositionInfo(position)
     
     def move(self, startPos, endPos):
-        self.__board.movePiece(startPos, endPos)
+        result = self.__board.movePiece(startPos, endPos)
         print(self.__board)
+        return result
 
     def displayBoard(self):
         print(self.__board)
@@ -149,4 +151,16 @@ class Game():
 
     def calculateThreats(self):
         self.__board.calculateThreats()
+
+    def calculateKing(self, position:str):
+        return self.__board.calculateKing(position)
+    
+    def getTurn(self):
+        return self.__currentTurn
+    
+    def endTurn(self):
+        if self.__currentTurn:
+            self.__currentTurn = False
+        else:
+            self.__currentTurn = True
 # end Game

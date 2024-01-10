@@ -3,6 +3,8 @@ import pygame
 from core.square import Square
 from core.game import Game
 from os import path
+import threading
+from copy import deepcopy
 
 class Interface():
     def __init__(self):
@@ -49,6 +51,10 @@ class Interface():
         if len(self.__images) == 0:
             self.loadImages()
 
+    def updatePieces(self, startPos, endPos):
+        self.__squares[endPos].setPiece(self.__squares[startPos].getPiece())
+        self.__squares[startPos].setPiece(None)
+
     def loadImages(self):
         for i in self.__squares:
             if self.__squares[i].getPiece() != None:
@@ -63,7 +69,7 @@ class Interface():
 
     def start(self):
         pygame.init()
-        pygame.display.set_caption('Chess')
+        pygame.display.set_caption('Chess') # Set the window title
         screen = pygame.display.set_mode((self.__res_x, self.__res_y))
         clock = pygame.time.Clock()
         running = True
@@ -72,9 +78,10 @@ class Interface():
         updateScreen = True
         currentPos = None
         debug = True
+        threads = {}
+        self.loadPieces(newGame.getBoard())
         while running:
-            # poll for events
-            # pygame.QUIT event means the user clicked X to close your window
+            # Check events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -86,22 +93,36 @@ class Interface():
                                 if self.__squares[i].getStats()[1] < pos[1] < self.__squares[i].getStats()[1]+self.__res_factor:
                                     if i == currentPos:
                                         currentPos = None
-                                        updateScreen = True
+                                        # updateScreen = True
                                     elif currentPos == None:
                                         currentPos = i
-                                        updateScreen = True
+                                        # updateScreen = True
                                     elif newGame.getTokenMoves(currentPos) != None and i in newGame.getTokenMoves(currentPos):
-                                        newGame.move(currentPos, i)
-                                        currentPos = None
-                                        updateScreen = True
+                                        if newGame.move(currentPos, i):
+                                            self.updatePieces(currentPos, i)
+                                            currentPos = None
+                                            oneKing = False
+                                            for j in self.__squares:
+                                                if self.__squares[j].getPiece() != None:
+                                                    if 'king' in self.__squares[j].getPiece():
+                                                        print(j, self.__squares[j].getPiece())
+                                                        threads[self.__squares[j].getPiece()] = newGame.calculateKing(j)
+                                                        if oneKing:
+                                                            break
+                                                        else:
+                                                            oneKing = True
+                                        else:
+                                            currentPos = None
+                                        # updateScreen = True
                                     else:
                                         currentPos = None
-                                        updateScreen = True
+                                        # updateScreen = True
                     else:
                         currentPos = None
-                        updateScreen = True
+                        # updateScreen = True
+            # Updating the screen
             if updateScreen: # For screen updates
-                self.loadPieces(newGame.getBoard())
+                # self.loadPieces(newGame.getBoard())
                 screen.fill(pygame.Color(100, 100, 100, a=255))
                 # Redraw Board
                 for i in self.__squares:
@@ -120,6 +141,12 @@ class Interface():
                         if currentPos == i:
                             screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
                             screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                            if 'king' in self.__squares[i].getPiece():
+                                # print(self.__squares[i].getPiece())
+                                if self.__squares[i].getPiece() in threads:
+                                    if threads[self.__squares[i].getPiece()].is_alive():
+                                        threads[self.__squares[i].getPiece()].join()
+                                    del threads[self.__squares[i].getPiece()]
                             for j in newGame.getTokenMoves(i):
                                 if newGame.getBoard()[j] != 'Empty\t\t':
                                     if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(i)['team']:
