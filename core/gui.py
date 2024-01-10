@@ -92,19 +92,21 @@ class Interface():
                                 if self.__squares[i].getStats()[1] < pos[1] < self.__squares[i].getStats()[1]+self.__res_factor:
                                     if i == currentPos:
                                         currentPos = None
-                                        # updateScreen = True
                                     elif currentPos == None:
-                                        currentPos = i
-                                        # updateScreen = True
-                                    elif newGame.getTokenMoves(currentPos) != None and i in newGame.getTokenMoves(currentPos):
+                                        # Turn Order Checking
+                                        if newGame.getTokenStatus(i) != None and newGame.getTokenStatus(i) != False:
+                                            if newGame.getTokenStatus(i)['team'] == newGame.getTurn():
+                                                currentPos = i
+                                        # currentPos = i # Uncomment to remove restriction
+                                    elif newGame.getTokenMoves(currentPos) != None and i in newGame.getTokenMoves(currentPos) and newGame.getTokenStatus(currentPos)['team'] == newGame.getTurn():
                                         if newGame.move(currentPos, i):
                                             self.updatePieces(currentPos, i)
                                             currentPos = None
                                             oneKing = False
+                                            newGame.endTurn()
                                             for j in self.__squares:
                                                 if self.__squares[j].getPiece() != None:
                                                     if 'king' in self.__squares[j].getPiece():
-                                                        # print(j, self.__squares[j].getPiece())
                                                         threads[self.__squares[j].getPiece()] = newGame.calculateKing(j)
                                                         if oneKing:
                                                             break
@@ -112,13 +114,10 @@ class Interface():
                                                             oneKing = True
                                         else:
                                             currentPos = None
-                                        # updateScreen = True
                                     else:
                                         currentPos = None
-                                        # updateScreen = True
                     else:
                         currentPos = None
-                        # updateScreen = True
             # Updating the screen
             if True: # For screen updates
                 # self.loadPieces(newGame.getBoard())
@@ -141,7 +140,6 @@ class Interface():
                             screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
                             screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
                             if 'king' in self.__squares[i].getPiece():
-                                # print(self.__squares[i].getPiece())
                                 if self.__squares[i].getPiece() in threads:
                                     if threads[self.__squares[i].getPiece()].is_alive():
                                         threads[self.__squares[i].getPiece()].join()
@@ -166,8 +164,6 @@ class Interface():
                     screen.blit(id, (0, fps.get_height()))
                 # Update screen
                 pygame.display.flip()
-                # newGame.calculateThreats()
-                # updateScreen = False
             # Limits FPS to 60
             clock.tick(60)
         pygame.quit()
