@@ -31,19 +31,21 @@ class Pawn(Piece):
         if (self.getTeam() and self.getPos()[1] == '8') or (not self.getTeam() and self.getPos()[1] == '1'):
             return validMoves
         else:
-            if self.getInitial():
-                if self.getTeam(): # White Move
-                    if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1+self.getInitial())) == None:
-                        validMoves.append(self.getPos()[0]+str(int(self.getPos()[1])+1+self.getInitial()))
-                else: # Black Move
-                    if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1-self.getInitial())) == None:
-                        validMoves.append(self.getPos()[0]+str(int(self.getPos()[1])-1-self.getInitial()))
+            
             if self.getTeam(): # White Move
                 if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1)) == None:
                     validMoves.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
             else: # Black Move
                 if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1)) == None:
                     validMoves.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
+            if len(validMoves) > 0:
+                if self.getInitial():
+                    if self.getTeam(): # White Move
+                        if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1+self.getInitial())) == None:
+                            validMoves.append(self.getPos()[0]+str(int(self.getPos()[1])+1+self.getInitial()))
+                    else: # Black Move
+                        if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1-self.getInitial())) == None:
+                            validMoves.append(self.getPos()[0]+str(int(self.getPos()[1])-1-self.getInitial()))
             for index, value in enumerate(x): # Checking for attack moves
                 if value == self.getPos()[0]:
                     if value != 'A':
@@ -69,7 +71,7 @@ class Pawn(Piece):
                                     if board.getPositionToken(x[index+1]+str(int(self.getPos()[1])-1)).getName() != 'King':
                                         validMoves.append(x[index+1]+str(int(self.getPos()[1])-1))
                     break
-            # Add  En Passant
+            # Adding  En Passant
             lastBoard = board.getHistory(-2)
             if self.getTeam() and self.getPos()[1] == '5': # White Move
                 if xPos > 0:

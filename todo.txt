@@ -1,10 +1,7 @@
 King
     Fix lag upon clicking a king, caused by getBoardThreatens() # Completed, threaded
-    Lag between selecting moves has increased, fix? more threads?
+        -Lag between selecting moves has increased, fix? more threads? optimizations?
     Castling
-
-Pawn
-    En Passante needs to stop if a piece is infront of the pawn
 
 Figure out how to pin a piece
 
