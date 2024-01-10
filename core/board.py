@@ -112,34 +112,6 @@ class Board():
         else:
             return False
         
-        # try:
-        #     if endPos in self.__board[startPos].listMoves(deepcopy(self)):
-        #         if self.__board[endPos] != 'Empty\t\t': # Taking a Piece
-        #             self.__score[self.__board[startPos].getTeam()] += self.__board[endPos].getValue()
-        #             self.__graveyard.append(self.__board[endPos])
-        #             self.__board[endPos] = 'Empty\t\t'
-        #         if self.__board[startPos].getName() == 'Pawn': # Check for En Passant
-        #             if self.__board[startPos].getEnPassant():
-        #                 if self.__board[startPos].getTeam(): # White En Passant
-        #                     self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])-1)].getValue()
-        #                     self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])-1)])
-        #                     self.__board[endPos[0]+str(int(endPos[1])-1)] = 'Empty\t\t'
-        #                 else: # Black En Passant
-        #                     self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])+1)].getValue()
-        #                     self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])+1)])
-        #                     self.__board[endPos[0]+str(int(endPos[1])+1)] = 'Empty\t\t'
-        #         self.__board[endPos] = self.__board[startPos]
-        #         self.__board[endPos].setPos(endPos)
-        #         self.__board[startPos] = 'Empty\t\t'
-        #         if self.__board[endPos].getInitial():
-        #             self.__board[endPos].flipInitial()
-        #         self.__history.append(deepcopy(self.__board))
-        #         return True
-        #     else:
-        #         return False
-        # except:
-        #     return False
-        
     def snapshotBoard(self):
         self.__history.append(deepcopy(self.__board))
 
@@ -161,7 +133,7 @@ class Board():
         self.__threats = [blackThreats, whiteThreats]
 
     def calculateKing(self, position:str):
-        print(self.__board[position])
+        # print(self.__board[position])
         if self.__board[position] != 'Empty\t\t':
             if 'King' in self.__board[position].getName():
                 thread = Thread(target=self.__board[position].calculateThreats, name=self.__board[position].getName(), args=(deepcopy(self),))
@@ -169,7 +141,7 @@ class Board():
                 return thread
                 # self.__board[position].calculateThreats(deepcopy(self))
         else:
-            return Thread()
+            return Thread() # Return an empty thread
 
     def getBoardThreats(self, team:bool=None):
         if team == None:

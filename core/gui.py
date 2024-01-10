@@ -75,7 +75,6 @@ class Interface():
         running = True
         newGame = Game()
         newGame.newGame()
-        updateScreen = True
         currentPos = None
         debug = True
         threads = {}
@@ -105,7 +104,7 @@ class Interface():
                                             for j in self.__squares:
                                                 if self.__squares[j].getPiece() != None:
                                                     if 'king' in self.__squares[j].getPiece():
-                                                        print(j, self.__squares[j].getPiece())
+                                                        # print(j, self.__squares[j].getPiece())
                                                         threads[self.__squares[j].getPiece()] = newGame.calculateKing(j)
                                                         if oneKing:
                                                             break
@@ -121,7 +120,7 @@ class Interface():
                         currentPos = None
                         # updateScreen = True
             # Updating the screen
-            if updateScreen: # For screen updates
+            if True: # For screen updates
                 # self.loadPieces(newGame.getBoard())
                 screen.fill(pygame.Color(100, 100, 100, a=255))
                 # Redraw Board
