@@ -94,11 +94,11 @@ class Interface():
                                         currentPos = None
                                     elif currentPos == None:
                                         # Turn Order Checking
-                                        # if newGame.getTokenStatus(i) != None and newGame.getTokenStatus(i) != False:
-                                        #     if newGame.getTokenStatus(i)['team'] == newGame.getTurn():
-                                        #         currentPos = i
-                                        currentPos = i # Uncomment to remove restriction
-                                    elif newGame.getTokenMoves(currentPos) != None and i in newGame.getTokenMoves(currentPos):# and newGame.getTokenStatus(currentPos)['team'] == newGame.getTurn(): # Comment out team stuff to remove turn restrictions
+                                        if newGame.getTokenStatus(i) != None and newGame.getTokenStatus(i) != False:
+                                            if newGame.getTokenStatus(i)['team'] == newGame.getTurn():
+                                                currentPos = i
+                                        # currentPos = i # Uncomment to remove restriction
+                                    elif newGame.getTokenMoves(currentPos) != None and i in newGame.getTokenMoves(currentPos) and newGame.getTokenStatus(currentPos)['team'] == newGame.getTurn(): # Comment out team stuff to remove turn restrictions
                                         if newGame.move(currentPos, i):
                                             # self.updatePieces(currentPos, i)
                                             currentPos = None
