@@ -1,7 +1,7 @@
 King
     Fix lag upon clicking a king, caused by getBoardThreatens() # Completed, threaded
         -Lag between selecting moves has increased, fix? more threads? optimizations?
-    Castling
+    Castling # King & Rook Completed
 
 Figure out how to pin a piece
 

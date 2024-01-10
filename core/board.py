@@ -100,6 +100,16 @@ class Board():
                         self.__score[self.__board[startPos].getTeam()] += self.__board[endPos[0]+str(int(endPos[1])+1)].getValue()
                         self.__graveyard.append(self.__board[endPos[0]+str(int(endPos[1])+1)])
                         self.__board[endPos[0]+str(int(endPos[1])+1)] = 'Empty\t\t'
+            elif self.__board[startPos].getName() == 'King': # Check for Castling
+                if self.__board[startPos].getCastling():
+                    if endPos[0] == 'C': # Left
+                        self.__board['D'+startPos[1]] = self.__board['A'+startPos[1]]
+                        self.__board['D'+startPos[1]].setPos('D'+startPos[1])
+                        self.__board['A'+startPos[1]] = 'Empty\t\t'
+                    elif endPos[0] == 'G':  # Right
+                        self.__board['F'+startPos[1]] = self.__board['H'+startPos[1]]
+                        self.__board['F'+startPos[1]].setPos('F'+startPos[1])
+                        self.__board['H'+startPos[1]] = 'Empty\t\t'
             self.__board[endPos] = self.__board[startPos]
             # print(startPos, self.__board[startPos], endPos, self.__board[endPos])
             self.__board[endPos].setPos(endPos)

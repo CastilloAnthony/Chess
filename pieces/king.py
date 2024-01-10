@@ -8,10 +8,17 @@ class King(Queen, Piece):
         self.setTeam(team) # True/False White/Black
         self.setValue(100)
         self.__threatenedSquares = []
+        self.__castling = False
 
     def __del__(self):
         del self.__threatenedSquares
         super().__del__()
+
+    def getCastling(self):
+        return self.__castling
+    
+    def flipCastling(self):
+        self.__castling = False
 
     def listMoves(self, board):
         validMoves = []
@@ -82,6 +89,29 @@ class King(Queen, Piece):
                     validMoves.append(x[xPos+1]+str(int(self.getPos()[1])-1))
                 elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
                     validMoves.append(x[xPos+1]+str(int(self.getPos()[1])-1))
+        if self.getInitial(): # Castling
+                for i in reversed(range(0, xPos)): # Left Side
+                    # print('Left', x[i]+self.getPos()[1],board.getPositionToken(x[i]+self.getPos()[1]))
+                    if board.getPositionToken(x[i]+self.getPos()[1]) == None:
+                        continue
+                    elif board.getPositionToken(x[i]+self.getPos()[1]).getName() != 'Rook':
+                        break
+                    if board.getPositionToken(x[i]+self.getPos()[1]) != None:
+                        if board.getPositionToken(x[i]+self.getPos()[1]).getName() == 'Rook':
+                            if board.getPositionToken(x[i]+self.getPos()[1]).getInitial():
+                                validMoves.append('C'+self.getPos()[1])
+                                self.__castling = True
+                for i in range(xPos+1, 8): # Right Side
+                    # print('Right', x[i]+self.getPos()[1], board.getPositionToken(x[i]+self.getPos()[1]))
+                    if board.getPositionToken(x[i]+self.getPos()[1]) == None:
+                        continue
+                    elif board.getPositionToken(x[i]+self.getPos()[1]).getName() != 'Rook':
+                        break
+                    if board.getPositionToken(x[i]+self.getPos()[1]) != None:
+                        if board.getPositionToken(x[i]+self.getPos()[1]).getName() == 'Rook':
+                            if board.getPositionToken(x[i]+self.getPos()[1]).getInitial():
+                                validMoves.append('G'+self.getPos()[1])
+                                self.__castling = True
         return validMoves
 
     def threatening(self, board):
