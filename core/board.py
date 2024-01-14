@@ -160,4 +160,17 @@ class Board():
             return self.__threats[team]
         else:
             return self.__threats[team]
+        
+    def findChecks(self):
+        oneKing = False
+        for i in self.__board:
+            if self.getPositionInfo(i) != False:
+                if self.getPositionInfo(i)['name'] == 'King':
+                    if self.getPositionToken(i).check(deepcopy(self)) != False:
+                        # checks.append(self.getPositionToken(i).check(deepcopy(self)))
+                        return self.getPositionToken(i).check(deepcopy(self))
+                    if oneKing:
+                        return False
+                    else:
+                        oneKing = True
 # end Board

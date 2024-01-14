@@ -3,7 +3,7 @@ import pygame
 from core.square import Square
 from core.game import Game
 from os import path
-import threading
+from threading import Thread
 from copy import deepcopy
 
 class Interface():
@@ -99,7 +99,16 @@ class Interface():
                                                 currentPos = i
                                         # currentPos = i # Uncomment to remove restriction
                                     elif newGame.getTokenMoves(currentPos) != None and i in newGame.getTokenMoves(currentPos) and newGame.getTokenStatus(currentPos)['team'] == newGame.getTurn(): # Comment out team stuff to remove turn restrictions
-                                        if newGame.move(currentPos, i):
+                                        # if newGame.findChecks() == False:
+                                        #     if newGame.checkFuture(currentPos, i):
+                                        #         validMove = True
+                                        if newGame.checkFuture(currentPos, i):
+                                            validMove = True
+                                        else:
+                                            validMove = False
+                                        if validMove:
+                                            threads['move'] = Thread(target=newGame.move, name='name', args=(currentPos, i,))
+                                            threads['move'].start()
                                             # self.updatePieces(currentPos, i)
                                             currentPos = None
                                             oneKing = False
@@ -107,13 +116,29 @@ class Interface():
                                             for j in self.__squares:
                                                 if self.__squares[j].getPiece() != None:
                                                     if 'king' in self.__squares[j].getPiece():
+                                                        if threads['move'].is_alive():
+                                                            threads['move'].join()
                                                         threads[self.__squares[j].getPiece()] = newGame.calculateKing(j)
                                                         if oneKing:
                                                             break
                                                         else:
                                                             oneKing = True
-                                        else:
-                                            currentPos = None
+                                        # if newGame.move(currentPos, i):
+                                        #     threads['move'] = Thread(target=newGame.move, name='name', args=(currentPos, i,))
+                                        #     # self.updatePieces(currentPos, i)
+                                        #     currentPos = None
+                                        #     oneKing = False
+                                        #     newGame.endTurn()
+                                        #     for j in self.__squares:
+                                        #         if self.__squares[j].getPiece() != None:
+                                        #             if 'king' in self.__squares[j].getPiece():
+                                        #                 threads[self.__squares[j].getPiece()] = newGame.calculateKing(j)
+                                        #                 if oneKing:
+                                        #                     break
+                                        #                 else:
+                                        #                     oneKing = True
+                                        # else:
+                                        #     currentPos = None
                                     else:
                                         currentPos = None
                     else:
@@ -157,6 +182,15 @@ class Interface():
                 # Drawing info onto the board, score, board id, fps, etc.
                 score = pygame.font.SysFont("Times New Roman", round(32*self.__guiScale)).render("White: "+str(newGame.getScore()[True])+"   Black: "+str(newGame.getScore()[False]), True, (0, 0, 0))
                 screen.blit(score, (self.__res_x/2-score.get_width()/2, self.__res_factor/2-score.get_height()/2))
+                checked = newGame.findChecks()
+                if checked != False:
+                    if checked['team']:
+                        team = 'White'
+                    else:
+                        team = 'Black'
+                    check = pygame.font.SysFont("Times New Roman", round(32*self.__guiScale)).render(team+' Check', True, (0, 0, 0))
+                    screen.blit(check, (self.__res_x/2-check.get_width()/2, self.__res_factor*9+self.__res_factor/2-check.get_height()/2))
+                # print(checked)
                 if debug:
                     fps = pygame.font.SysFont("Times New Roman", round(12*self.__guiScale)).render('fps: '+str(round(clock.get_fps())), True, (0, 0, 0))
                     screen.blit(fps, (0, 0))

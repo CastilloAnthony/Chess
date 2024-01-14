@@ -4,11 +4,12 @@ King
     Castling # King & Rook Completed
 
 Figure out how to pin a piece
+    - Completed by proxy of checks
 
 Main Game Logic
     Turn Orders # Complete
-    Player team selection
-    Checks & Checkmate
+    Player team selection # Incomplete
+    Checks & Checkmate # Checks completed, checkmate incomplete
 
 GUI
     Inprogress...

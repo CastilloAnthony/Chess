@@ -6,6 +6,7 @@ from pieces.bishop import Bishop
 from pieces.rook import Rook
 from pieces.queen import Queen
 from pieces.king import King
+from copy import deepcopy
 
 class Game():
     def __init__(self):
@@ -163,4 +164,19 @@ class Game():
             self.__currentTurn = False
         else:
             self.__currentTurn = True
+
+    def findChecks(self):
+        return self.__board.findChecks()
+    
+    def checkFuture(self, startPos, endPos):
+        tempBoard = deepcopy(self.__board)
+        tempBoard.movePiece(startPos, endPos)
+        checked = tempBoard.findChecks()
+        if checked != False:
+            if checked['team'] == self.__currentTurn:
+                return False # Invalid Move
+            else:
+                return True # Valid Move
+        else:
+            return True # Valid Move
 # end Game

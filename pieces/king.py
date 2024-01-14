@@ -216,11 +216,17 @@ class King(Queen, Piece):
         self.__threatenedSquares = threatenedSquares
 
     def check(self, board):
-        threat = self.getBoardThreatens(board)
-        for i in (threat):
-            if i == self.getPos():
-                return True
+        for i in Queen.threatening(self, board):
+            if board.getPositionInfo(i) != False:
+                if board.getPositionInfo(i)['team'] != self.getTeam():
+                    if board.getPositionInfo(i)['name'] == 'Queen' or board.getPositionInfo(i)['name'] == 'Bishop' or board.getPositionInfo(i)['name'] == 'Rook':
+                        return self.getStatus()
         return False
+        # threat = self.getBoardThreatens(board)
+        # for i in (threat):
+        #     if i == self.getPos():
+        #         return True
+        # return False
 
     def pinned(self, board, piecePosition:str):
         pass
