@@ -1,18 +1,21 @@
 King
-    Fix lag upon clicking a king, caused by getBoardThreatens() # Completed, threaded
+    - Fix lag upon clicking a king, caused by getBoardThreatens() # Completed, threaded
         -Lag between selecting moves has increased, fix? more threads? optimizations?
-    Castling # King & Rook Completed
+    - Castling # King & Rook Completed
 
 Figure out how to pin a piece
     - Completed by proxy of checks
 
+Piece Promotions
+    - Inprogress...
+
 Main Game Logic
-    Turn Orders # Complete
-    Player team selection # Incomplete
-    Checks & Checkmate # Checks completed, checkmate incomplete
-        - Modify checks to look at specific patterns & pieces, Rook, Bishop, Knight, Pawn
+    - Turn Orders # Complete
+    - Player team selection # Incomplete
+    - Checks & Checkmate # Checks completed, checkmate incomplete
+        - Modify checks to look at specific patterns & pieces, Rook, Bishop, Knight, Pawn # Completed
 
 GUI
-    Inprogress...
+    - Inprogress...
 
 AI (Min/Max, BFS)

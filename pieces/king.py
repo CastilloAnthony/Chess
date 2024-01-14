@@ -1,7 +1,10 @@
 from pieces.piece import Piece
-from pieces.queen import Queen
-
-class King(Queen, Piece):
+# from pieces.queen import Queen
+from pieces.rook import Rook
+from pieces.bishop import Bishop
+from pieces.knight import Knight
+# from pieces.pawn import Pawn
+class King(Rook, Bishop, Knight, Piece):
     def __init__(self, team:bool):
         Piece.__init__(self)
         self.setName('King')
@@ -11,7 +14,7 @@ class King(Queen, Piece):
         self.__castling = False
 
     def __del__(self):
-        del self.__threatenedSquares
+        del self.__threatenedSquares, self.__castling
         super().__del__()
 
     def getCastling(self):
@@ -216,11 +219,61 @@ class King(Queen, Piece):
         self.__threatenedSquares = threatenedSquares
 
     def check(self, board):
-        for i in Queen.threatening(self, board):
+        for i in Rook.threatening(self, board):
             if board.getPositionInfo(i) != False:
                 if board.getPositionInfo(i)['team'] != self.getTeam():
-                    if board.getPositionInfo(i)['name'] == 'Queen' or board.getPositionInfo(i)['name'] == 'Bishop' or board.getPositionInfo(i)['name'] == 'Rook':
+                    if board.getPositionInfo(i)['name'] == 'Queen' or board.getPositionInfo(i)['name'] == 'Rook':
                         return self.getStatus()
+        for i in Bishop.threatening(self, board):
+            if board.getPositionInfo(i) != False:
+                if board.getPositionInfo(i)['team'] != self.getTeam():
+                    if board.getPositionInfo(i)['name'] == 'Queen' or board.getPositionInfo(i)['name'] == 'Bishop':
+                        return self.getStatus()
+        for i in Knight.threatening(self, board):
+            if board.getPositionInfo(i) != False:
+                if board.getPositionInfo(i)['team'] != self.getTeam():
+                    if board.getPositionInfo(i)['name'] == 'Knight':
+                        return self.getStatus()
+        x, _ = board.getCoordRules()
+        xPos = None
+        for index, value in enumerate(x):
+            if value == self.getPos()[0]:
+                xPos = index
+        if xPos > 0:
+            if self.getTeam():
+                if int(self.getPos()[1]) < 8:
+                    if board.getPositionInfo(x[xPos-1]+str(int(self.getPos()[1])+1)) != False:
+                        if board.getPositionInfo(x[xPos-1]+str(int(self.getPos()[1])+1))['team'] != self.getTeam():
+                            if board.getPositionInfo(x[xPos-1]+str(int(self.getPos()[1])+1))['name'] == 'Pawn':
+                                return self.getStatus()
+                    # threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
+            else:
+                if int(self.getPos()[1]) > 1:
+                    if board.getPositionInfo(x[xPos-1]+str(int(self.getPos()[1])-1)) != False:
+                        if board.getPositionInfo(x[xPos-1]+str(int(self.getPos()[1])-1))['team'] != self.getTeam():
+                            if board.getPositionInfo(x[xPos-1]+str(int(self.getPos()[1])-1))['name'] == 'Pawn':
+                                return self.getStatus()
+                    # threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
+        if xPos < 7:
+            if self.getTeam():
+                if int(self.getPos()[1]) < 8:
+                    if board.getPositionInfo(x[xPos+1]+str(int(self.getPos()[1])+1)) != False:
+                        if board.getPositionInfo(x[xPos+1]+str(int(self.getPos()[1])+1))['team'] != self.getTeam():
+                            if board.getPositionInfo(x[xPos+1]+str(int(self.getPos()[1])+1))['name'] == 'Pawn':
+                                return self.getStatus()
+                    # threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
+            else:
+                if int(self.getPos()[1]) > 1:
+                    if board.getPositionInfo(x[xPos+1]+str(int(self.getPos()[1])-1)) != False:
+                        if board.getPositionInfo(x[xPos+1]+str(int(self.getPos()[1])-1))['team'] != self.getTeam():
+                            if board.getPositionInfo(x[xPos+1]+str(int(self.getPos()[1])-1))['name'] == 'Pawn':
+                                return self.getStatus()
+                    # threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))      
+        # for i in Pawn.threatening(self, board):
+        #     if board.getPositionInfo(i) != False:
+        #         if board.getPositionInfo(i)['team'] != self.getTeam():
+        #             if board.getPositionInfo(i)['name'] == 'Pawn':
+        #                 return self.getStatus()
         return False
         # threat = self.getBoardThreatens(board)
         # for i in (threat):

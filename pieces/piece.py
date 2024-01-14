@@ -9,6 +9,7 @@ class Piece():
         self.__initial = True # True/Flase Not Moved/Moved
         self.__position = None
         self.__pinned = False
+        # self.__validMoves == []
 
     def __del__(self):
         del self.__id, self.__name, self.__team, self.__value, self.__initial, self.__position
@@ -79,4 +80,7 @@ class Piece():
     
     def setPinned(self, pinned):
         self.__pinned = pinned
+
+    # def getValidMoves(self):
+    #     return self.__validMoves
 # end Piece

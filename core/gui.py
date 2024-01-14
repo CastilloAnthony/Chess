@@ -123,6 +123,7 @@ class Interface():
                                                             break
                                                         else:
                                                             oneKing = True
+                                            print(newGame.checkForPromote())
                                         # if newGame.move(currentPos, i):
                                         #     threads['move'] = Thread(target=newGame.move, name='name', args=(currentPos, i,))
                                         #     # self.updatePieces(currentPos, i)
@@ -169,7 +170,10 @@ class Interface():
                                     if threads[self.__squares[i].getPiece()].is_alive():
                                         threads[self.__squares[i].getPiece()].join()
                                     del threads[self.__squares[i].getPiece()]
+                            # validMove = True
                             for j in newGame.getTokenMoves(i):
+                                if not newGame.checkFuture(i, j):
+                                    continue
                                 if newGame.getBoard()[j] != 'Empty\t\t':
                                     if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(i)['team']:
                                         screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))

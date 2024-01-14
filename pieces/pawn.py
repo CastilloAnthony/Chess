@@ -7,6 +7,7 @@ class Pawn(Piece):
         super().setTeam(team) # True/False White/Black
         super().setValue(1)
         self.__enPassant = False
+        self.__promotion = False
 
     def __del__(self):
         del self.__enPassant

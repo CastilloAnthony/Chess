@@ -15,6 +15,7 @@ class Board():
         self.__history = []
         self.__threats = []
         self.__history.append(deepcopy(self.__board))
+        self.__promotion = False
 
     def __del__(self):
         pass
@@ -116,6 +117,9 @@ class Board():
             self.__board[startPos] = 'Empty\t\t'
             if self.__board[endPos].getInitial():
                 self.__board[endPos].flipInitial()
+            if self.__board[endPos].getName() == 'Pawn':
+                if endPos[1] == '8' or endPos[1] == '1': # Promote
+                    self.__promotion = self.__board[endPos].getStatus()
             self.__history.append(deepcopy(self.__board))
             # self.calculateThreats()
             return True
@@ -173,4 +177,11 @@ class Board():
                         return False
                     else:
                         oneKing = True
+
+    def getPromotion(self):
+        return self.__promotion
+    
+    def promoted(self):
+        if self.__promotion != False:
+            self.__promotion = False
 # end Board

@@ -179,4 +179,26 @@ class Game():
                 return True # Valid Move
         else:
             return True # Valid Move
+    
+    def checkForPromote(self):
+        return self.__board.getPromotion()
+    
+    def promote(self, position:str, desiredPiece:str):
+        if desiredPiece == 'Queen':
+            newQueen = Queen(True)
+            self.__board.setPiece(newQueen, position)
+        elif desiredPiece == 'Bishop':
+            newBishop1 = Bishop(True)
+            self.__board.setPiece(newBishop1, position)
+        elif desiredPiece == 'Knight':
+            newKnight1 = Knight(True)
+            self.__board.setPiece(newKnight1, position)
+        elif desiredPiece == 'Rook':
+            newRook1 = Rook(True)
+            self.__board.setPiece(newRook1, position)
+        else:
+            newQueen = Queen(True)
+            self.__board.setPiece(newQueen, position)
+        self.__board.promoted()
+        # self.__board.promote(position, desiredPiece='Queen')
 # end Game
