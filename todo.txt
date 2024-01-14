@@ -10,6 +10,7 @@ Main Game Logic
     Turn Orders # Complete
     Player team selection # Incomplete
     Checks & Checkmate # Checks completed, checkmate incomplete
+        - Modify checks to look at specific patterns & pieces, Rook, Bishop, Knight, Pawn
 
 GUI
     Inprogress...
