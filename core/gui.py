@@ -176,6 +176,9 @@ class Interface():
                         team = 'Black'
                     check = pygame.font.SysFont("Times New Roman", round(32*self.__guiScale)).render(team+' Check', True, (0, 0, 0))
                     screen.blit(check, (self.__res_x/2-check.get_width()/2, self.__res_factor*9+self.__res_factor/2-check.get_height()/2))
+                # if newGame.checkForPromote() != False:
+                #     promote = pygame.font.SysFont("Times New Roman", round(32*self.__guiScale)).render('Pawn at '+newGame.checkForPromote()['position']+' is ready for Promotion', True, (0, 0, 0))
+                #     screen.blit(promote, (self.__res_x/2-promote.get_width()/2, self.__res_factor*9+self.__res_factor/2-promote.get_height()/2))
                 # print(checked)
                 if debug:
                     fps = pygame.font.SysFont("Times New Roman", round(12*self.__guiScale)).render('fps: '+str(round(clock.get_fps())), True, (0, 0, 0))

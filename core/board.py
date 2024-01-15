@@ -136,7 +136,7 @@ class Board():
         
     def snapshotBoard(self):
         if len(self.__history) > 3:
-            self.__history.pop()
+            self.__history.pop(0)
         self.__history.append(deepcopy(self.__board))
 
     def getHistory(self, number:int):
