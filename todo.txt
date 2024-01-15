@@ -6,14 +6,18 @@ King
 Figure out how to pin a piece
     - Completed by proxy of checks
 
+Fix En Passant
+    - Fixed
+
 Piece Promotions
     - Inprogress...
 
 Main Game Logic
     - Turn Orders # Complete
-    - Player team selection # Incomplete
-    - Checks & Checkmate # Checks completed, checkmate incomplete
+    - Checks # Checks completed
         - Modify checks to look at specific patterns & pieces, Rook, Bishop, Knight, Pawn # Completed
+    - Checkmate
+    - Player team selection # Incomplete
 
 GUI
     - Inprogress...

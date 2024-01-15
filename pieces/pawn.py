@@ -7,7 +7,7 @@ class Pawn(Piece):
         super().setTeam(team) # True/False White/Black
         super().setValue(1)
         self.__enPassant = False
-        self.__promotion = False
+        # self.__promotion = False
 
     def __del__(self):
         del self.__enPassant
@@ -22,7 +22,8 @@ class Pawn(Piece):
     def listMoves(self, board):
         validMoves = []
         if self.getPinned():
-            return validMoves
+            # return validMoves
+            self.setValidMoves(validMoves)
         x, y = board.getCoordRules()
         xPos = None
         for index, value in enumerate(x):
@@ -133,7 +134,8 @@ class Pawn(Piece):
                                                     # print(x[xPos+1]+str(int(self.getPos()[1])-1))
                                                     validMoves.append(x[xPos+1]+str(int(self.getPos()[1])-1))
                                                     self.__enPassant = True
-        return validMoves     
+        # return validMoves
+        self.setValidMoves(validMoves)     
         
     def threatening(self, board):
         threat = []

@@ -201,4 +201,7 @@ class Game():
             self.__board.setPiece(newQueen, position)
         self.__board.promoted()
         # self.__board.promote(position, desiredPiece='Queen')
+
+    def calculateMoves(self):
+        return self.__board.calculateMoves()
 # end Game

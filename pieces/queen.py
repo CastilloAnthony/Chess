@@ -11,8 +11,13 @@ class Queen(Rook, Bishop, Piece):
 
     def listMoves(self, board):
         if self.getPinned():
-            return []
-        return Rook.listMoves(self, board) + Bishop.listMoves(self, board)
+            # return []
+            self.setValidMoves([])
+        # return Rook.listMoves(self, board) + Bishop.listMoves(self, board)
+        Rook.listMoves(self, board)
+        temp = self.getValidMoves()
+        Bishop.listMoves(self, board)
+        self.setValidMoves(temp+self.getValidMoves())   
     
     def threatening(self, board):
         if self.getPinned():

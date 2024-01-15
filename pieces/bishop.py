@@ -10,7 +10,8 @@ class Bishop(Piece):
     def listMoves(self, board):
         validMoves = []
         if self.getPinned():
-            return validMoves
+            # return validMoves
+            self.setValidMoves(validMoves)
         x, y = board.getCoordRules()
         xPos = None
         for index, value in enumerate(x):
@@ -69,7 +70,8 @@ class Bishop(Piece):
                     break
                 else:
                     break
-        return validMoves
+        # return validMoves
+        self.setValidMoves(validMoves)   
     
     def threatening(self, board):
         threat = []

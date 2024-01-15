@@ -26,7 +26,8 @@ class King(Rook, Bishop, Knight, Piece):
     def listMoves(self, board):
         validMoves = []
         if self.getPinned():
-            return validMoves
+            # return validMoves
+            self.setValidMoves(validMoves)
         x, y = board.getCoordRules()
         xPos = None
         for index, value in enumerate(x):
@@ -115,7 +116,8 @@ class King(Rook, Bishop, Knight, Piece):
                             if board.getPositionToken(x[i]+self.getPos()[1]).getInitial():
                                 validMoves.append('G'+self.getPos()[1])
                                 self.__castling = True
-        return validMoves
+        # return validMoves
+        self.setValidMoves(validMoves)
 
     def threatening(self, board):
         threat = []

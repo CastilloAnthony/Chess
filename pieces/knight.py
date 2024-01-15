@@ -11,7 +11,8 @@ class Knight(Piece):
     def listMoves(self, board):
         validMoves = []
         if self.getPinned():
-            return validMoves
+            # return validMoves
+            self.setValidMoves(validMoves)
         x, y = board.getCoordRules()
         xPos = None
         for index, value in enumerate(x):
@@ -82,7 +83,8 @@ class Knight(Piece):
                 elif board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
                     if board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])-1)).getName() != 'King':
                         validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])-1))
-        return validMoves
+        # return validMoves
+        self.setValidMoves(validMoves)     
     
     def threatening(self, board):
         threat = []

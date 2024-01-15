@@ -77,7 +77,8 @@ class Interface():
         newGame.newGame()
         currentPos = None
         debug = True
-        threads = {}
+        threads = newGame.calculateMoves()
+        threads['move'] = Thread()
         self.loadPieces(newGame.getBoard())
         while running:
             # Check events
@@ -102,6 +103,10 @@ class Interface():
                                         # if newGame.findChecks() == False:
                                         #     if newGame.checkFuture(currentPos, i):
                                         #         validMove = True
+                                        if currentPos in threads.values():
+                                            if threads[currentPos].is_alive():
+                                                threads[currentPos].join()
+                                            del threads[currentPos]
                                         if newGame.checkFuture(currentPos, i):
                                             validMove = True
                                         else:
@@ -123,7 +128,8 @@ class Interface():
                                                             break
                                                         else:
                                                             oneKing = True
-                                            print(newGame.checkForPromote())
+                                            threads.update(newGame.calculateMoves())
+                                            # print(newGame.checkForPromote())
                                         # if newGame.move(currentPos, i):
                                         #     threads['move'] = Thread(target=newGame.move, name='name', args=(currentPos, i,))
                                         #     # self.updatePieces(currentPos, i)
@@ -159,30 +165,6 @@ class Interface():
                 for y in self.__y:
                     text = pygame.font.SysFont("Times New Roman", round (18*self.__guiScale)).render(y, True, (0, 0, 0))
                     screen.blit(text, (self.__res_factor-text.get_width()*2, self.__res_factor*(9-int(y))+self.__res_factor/2-text.get_height()/2))
-                # Draw Pieces and dots
-                for i in self.__squares:
-                    if self.__squares[i].getPiece() != None:
-                        if currentPos == i:
-                            screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
-                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                            if 'king' in self.__squares[i].getPiece():
-                                if self.__squares[i].getPiece() in threads:
-                                    if threads[self.__squares[i].getPiece()].is_alive():
-                                        threads[self.__squares[i].getPiece()].join()
-                                    del threads[self.__squares[i].getPiece()]
-                            # validMove = True
-                            for j in newGame.getTokenMoves(i):
-                                if not newGame.checkFuture(i, j):
-                                    continue
-                                if newGame.getBoard()[j] != 'Empty\t\t':
-                                    if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(i)['team']:
-                                        screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
-                                    else: # This should never happen
-                                        screen.blit(self.__images['dot_b_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
-                                else:
-                                    screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))
-                        else:
-                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
                 # Drawing info onto the board, score, board id, fps, etc.
                 score = pygame.font.SysFont("Times New Roman", round(32*self.__guiScale)).render("White: "+str(newGame.getScore()[True])+"   Black: "+str(newGame.getScore()[False]), True, (0, 0, 0))
                 screen.blit(score, (self.__res_x/2-score.get_width()/2, self.__res_factor/2-score.get_height()/2))
@@ -200,6 +182,38 @@ class Interface():
                     screen.blit(fps, (0, 0))
                     id = pygame.font.SysFont("Times New Roman", round(12*self.__guiScale)).render('Board ID: '+str(newGame.getBoardID()), True, (0, 0, 0))
                     screen.blit(id, (0, fps.get_height()))
+                # Draw Pieces and dots
+                if threads['move'].is_alive():
+                    threads['move'].join()
+                for i in self.__squares:
+                    if self.__squares[i].getPiece() != None:
+                        if currentPos == i:
+                            if i in threads.values():
+                                if threads[i].is_alive():
+                                    threads[i].join()
+                                del threads[i]
+                            screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
+                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
+                            if 'king' in self.__squares[i].getPiece():
+                                if self.__squares[i].getPiece() in threads:
+                                    if threads[self.__squares[i].getPiece()].is_alive():
+                                        threads[self.__squares[i].getPiece()].join()
+                                    del threads[self.__squares[i].getPiece()]
+                            # validMove = True
+                            # print(newGame.getTokenStatus(i))
+                            # print(newGame.getTokenMoves(i))
+                            for j in newGame.getTokenMoves(i):
+                                if not newGame.checkFuture(i, j):
+                                        continue
+                                if newGame.getBoard()[j] != 'Empty\t\t':
+                                    if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(i)['team']:
+                                        screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
+                                    else: # This should never happen
+                                        screen.blit(self.__images['dot_b_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
+                                else:
+                                    screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))
+                        else:
+                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
                 # Update screen
                 pygame.display.flip()
             # Limits FPS to 60
