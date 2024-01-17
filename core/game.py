@@ -133,7 +133,7 @@ class Game():
     
     def move(self, startPos, endPos):
         result = self.__board.movePiece(startPos, endPos)
-        print(self.__board)
+        # print(self.__board)
         return result
 
     def displayBoard(self):

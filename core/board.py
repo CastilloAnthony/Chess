@@ -88,7 +88,8 @@ class Board():
         
     def movePiece(self, startPos, endPos):
         # if endPos in self.__board[startPos].listMoves(deepcopy(self)):
-        if endPos in self.__board[startPos].getValidMoves():
+        # if endPos in self.__board[startPos].getValidMoves():
+        if True:
             if self.__board[endPos] != 'Empty\t\t': # Taking a Piece
                 self.__score[self.__board[startPos].getTeam()] += self.__board[endPos].getValue()
                 self.__graveyard.append(self.__board[endPos])
@@ -135,7 +136,7 @@ class Board():
             return False
         
     def snapshotBoard(self):
-        if len(self.__history) > 3:
+        if len(self.__history) > 2:
             self.__history.pop(0)
         self.__history.append(deepcopy(self.__board))
 

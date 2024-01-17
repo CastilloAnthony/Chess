@@ -118,9 +118,11 @@ class King(Rook, Bishop, Knight, Piece):
                                 self.__castling = True
         # return validMoves
         validatedMoves = []
+        boardThreats = self.__threatenedSquares
         for i in validMoves:
-            if gameState.checkFuture(self.getPos(), i):
-                validatedMoves.append(i)
+            if i not in boardThreats:
+                if gameState.checkFuture(self.getPos(), i):
+                    validatedMoves.append(i)
         self.setValidMoves(validatedMoves)   
 
     def threatening(self, board):
@@ -136,75 +138,83 @@ class King(Rook, Bishop, Knight, Piece):
         if (int(self.getPos()[1]) < 8):
             # print('Noth')
             # if (self.getPos()[0]+str(int(self.getPos()[1])+1) not in threatenedSquares):
-            if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1)) == None:
-                threat.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
-            elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
-                threat.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
-            elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1)).getTeam() == self.getTeam():
-                threat.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
+            threat.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
+            # if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1)) == None:
+            #     threat.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
+            # elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
+            #     threat.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
+            # elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])+1)).getTeam() == self.getTeam():
+            #     threat.append(self.getPos()[0]+str(int(self.getPos()[1])+1))
         if (int(self.getPos()[1]) > 1):
             # print('South')
             # if (self.getPos()[0]+str(int(self.getPos()[1])-1) not in threatenedSquares):
-            if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1)) == None:
-                threat.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
-            elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
-                threat.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
-            elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1)).getTeam() == self.getTeam():
-                threat.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
+            threat.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
+            # if board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1)) == None:
+            #     threat.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
+            # elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
+            #     threat.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
+            # elif board.getPositionToken(self.getPos()[0]+str(int(self.getPos()[1])-1)).getTeam() == self.getTeam():
+            #     threat.append(self.getPos()[0]+str(int(self.getPos()[1])-1))
         if (xPos > 0):
             # print('West')
             # if (x[xPos-1]+self.getPos()[1] not in threatenedSquares):
-            if board.getPositionToken(x[xPos-1]+self.getPos()[1]) == None:
-                threat.append(x[xPos-1]+self.getPos()[1])
-            elif board.getPositionToken(x[xPos-1]+self.getPos()[1]).getTeam() != self.getTeam():
-                threat.append(x[xPos-1]+self.getPos()[1])
-            elif board.getPositionToken(x[xPos-1]+self.getPos()[1]).getTeam() == self.getTeam():
-                threat.append(x[xPos-1]+self.getPos()[1])
+            threat.append(x[xPos-1]+self.getPos()[1])
+            # if board.getPositionToken(x[xPos-1]+self.getPos()[1]) == None:
+            #     threat.append(x[xPos-1]+self.getPos()[1])
+            # elif board.getPositionToken(x[xPos-1]+self.getPos()[1]).getTeam() != self.getTeam():
+            #     threat.append(x[xPos-1]+self.getPos()[1])
+            # elif board.getPositionToken(x[xPos-1]+self.getPos()[1]).getTeam() == self.getTeam():
+            #     threat.append(x[xPos-1]+self.getPos()[1])
         if (xPos < 7):
             # print('East')
             # if (x[xPos+1]+self.getPos()[1] not in threatenedSquares):
-            if board.getPositionToken(x[xPos+1]+self.getPos()[1]) == None:
-                threat.append(x[xPos+1]+self.getPos()[1])
-            elif board.getPositionToken(x[xPos+1]+self.getPos()[1]).getTeam() != self.getTeam():
-                threat.append(x[xPos+1]+self.getPos()[1])
-            elif board.getPositionToken(x[xPos+1]+self.getPos()[1]).getTeam() == self.getTeam():
-                threat.append(x[xPos+1]+self.getPos()[1])
+            threat.append(x[xPos+1]+self.getPos()[1])
+            # if board.getPositionToken(x[xPos+1]+self.getPos()[1]) == None:
+            #     threat.append(x[xPos+1]+self.getPos()[1])
+            # elif board.getPositionToken(x[xPos+1]+self.getPos()[1]).getTeam() != self.getTeam():
+            #     threat.append(x[xPos+1]+self.getPos()[1])
+            # elif board.getPositionToken(x[xPos+1]+self.getPos()[1]).getTeam() == self.getTeam():
+            #     threat.append(x[xPos+1]+self.getPos()[1])
         if (int(self.getPos()[1]) < 8 and xPos > 0):
             # print('NorthWest')
             # if (x[xPos-1]+str(int(self.getPos()[1])+1) not in threatenedSquares):
-            if board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])+1)) == None:
-                threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
-            elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
-                threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
-            elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])+1)).getTeam() == self.getTeam():
-                threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
+            threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
+            # if board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])+1)) == None:
+            #     threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
+            # elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
+            #     threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
+            # elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])+1)).getTeam() == self.getTeam():
+            #     threat.append(x[xPos-1]+str(int(self.getPos()[1])+1))
         if (int(self.getPos()[1]) < 8 and xPos < 7):
             # print('NorthEast')
             # if (str(x[xPos+1])+str(int(self.getPos()[1])+1) not in threatenedSquares):
-            if board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])+1)) == None:
-                threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
-            elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
-                threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
-            elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])+1)).getTeam() == self.getTeam():
-                threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
+            threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
+            # if board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])+1)) == None:
+            #     threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
+            # elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])+1)).getTeam() != self.getTeam():
+            #     threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
+            # elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])+1)).getTeam() == self.getTeam():
+            #     threat.append(x[xPos+1]+str(int(self.getPos()[1])+1))
         if (int(self.getPos()[1]) > 1 and xPos > 0):
             # print('SouthWest')
             # if (x[xPos-1]+str(int(self.getPos()[1])-1) not in threatenedSquares):
-            if board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])-1)) == None:
-                threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
-            elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
-                threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
-            elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])-1)).getTeam() == self.getTeam():
-                threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
+            threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
+            # if board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])-1)) == None:
+            #     threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
+            # elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
+            #     threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
+            # elif board.getPositionToken(x[xPos-1]+str(int(self.getPos()[1])-1)).getTeam() == self.getTeam():
+            #     threat.append(x[xPos-1]+str(int(self.getPos()[1])-1))
         if (int(self.getPos()[1]) > 1 and xPos < 7):
             # print('SouthEast')
             # if (x[xPos+1]+str(int(self.getPos()[1])-1) not in threatenedSquares):
-            if board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])-1)) == None:
-                threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))
-            elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
-                threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))
-            elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])-1)).getTeam() == self.getTeam():
-                threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))
+            threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))
+            # if board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])-1)) == None:
+            #     threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))
+            # elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])-1)).getTeam() != self.getTeam():
+            #     threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))
+            # elif board.getPositionToken(x[xPos+1]+str(int(self.getPos()[1])-1)).getTeam() == self.getTeam():
+            #     threat.append(x[xPos+1]+str(int(self.getPos()[1])-1))
         return threat
 
     def getBoardThreatens(self, board):
@@ -220,7 +230,7 @@ class King(Rook, Bishop, Knight, Piece):
                         if i in selfThreats:
                             if i not in threatenedSquares:
                                 threatenedSquares.append(i)
-                        if len(threatenedSquares) == len(selfThreats):
+                        if all(selfThreats) in threatenedSquares:
                             break
         self.__threatenedSquares = threatenedSquares
 
