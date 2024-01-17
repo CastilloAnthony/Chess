@@ -6,6 +6,7 @@ King
 Figure out how to pin a piece
     - Completed by proxy of checks
     - Bishop can't break a king out of a check...
+    - King can't break out of a check going diagonally...
 
 Fix En Passant
     - Fixed
