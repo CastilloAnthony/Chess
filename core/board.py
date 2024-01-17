@@ -175,18 +175,20 @@ class Board():
         else:
             return self.__threats[team]
         
-    def findChecks(self):
-        oneKing = False
+    def findChecks(self, currentTurn):
+        # oneKing = False
         for i in self.__board:
             if self.getPositionInfo(i) != False:
                 if self.getPositionInfo(i)['name'] == 'King':
-                    if self.getPositionToken(i).check(deepcopy(self)) != False:
-                        # checks.append(self.getPositionToken(i).check(deepcopy(self)))
-                        return self.getPositionToken(i).check(deepcopy(self))
-                    if oneKing:
-                        return False
-                    else:
-                        oneKing = True
+                    if self.getPositionInfo(i)['team'] == currentTurn:
+                        if self.getPositionToken(i).check(deepcopy(self)) != False:
+                            # checks.append(self.getPositionToken(i).check(deepcopy(self)))
+                            return self.getPositionToken(i).check(deepcopy(self))
+                    # if oneKing:
+                        # return False
+                    # else:
+                        # oneKing = True
+        return False
 
     def getPromotion(self):
         return self.__promotion
@@ -195,11 +197,12 @@ class Board():
         if self.__promotion != False:
             self.__promotion = False
 
-    def calculateMoves(self):
+    def calculateMoves(self, gameState):
         threads = {}
         for i in self.__board:
             if self.getPositionInfo(i) != False:
-                threads[i] = Thread(target=self.__board[i].listMoves, name=i, args=(deepcopy(self),))
+                # if self.getPositionInfo(i)['team'] == gameState.getTurn()
+                threads[i] = Thread(target=self.__board[i].listMoves, name=i, args=(deepcopy(self), gameState,))
                 threads[i].start()
         return threads
 # end Board

@@ -23,7 +23,7 @@ class King(Rook, Bishop, Knight, Piece):
     def flipCastling(self):
         self.__castling = False
 
-    def listMoves(self, board):
+    def listMoves(self, board, gameState):
         validMoves = []
         if self.getPinned():
             # return validMoves
@@ -117,7 +117,11 @@ class King(Rook, Bishop, Knight, Piece):
                                 validMoves.append('G'+self.getPos()[1])
                                 self.__castling = True
         # return validMoves
-        self.setValidMoves(validMoves)
+        validatedMoves = []
+        for i in validMoves:
+            if gameState.checkFuture(self.getPos(), i):
+                validatedMoves.append(i)
+        self.setValidMoves(validatedMoves)   
 
     def threatening(self, board):
         threat = []

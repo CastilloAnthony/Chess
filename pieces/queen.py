@@ -9,15 +9,21 @@ class Queen(Rook, Bishop, Piece):
         self.setTeam(team) # True/False White/Black
         self.setValue(9)
 
-    def listMoves(self, board):
+    def listMoves(self, board, gameState):
         if self.getPinned():
             # return []
             self.setValidMoves([])
         # return Rook.listMoves(self, board) + Bishop.listMoves(self, board)
-        Rook.listMoves(self, board)
+        Rook.listMoves(self, board, gameState)
         temp = self.getValidMoves()
-        Bishop.listMoves(self, board)
-        self.setValidMoves(temp+self.getValidMoves())   
+        Bishop.listMoves(self, board, gameState)
+        validMoves = temp+self.getValidMoves()
+        validatedMoves = []
+        for i in validMoves:
+            if gameState.checkFuture(self.getPos(), i):
+                validatedMoves.append(i)
+        self.setValidMoves(validatedMoves)    
+        # self.setValidMoves()   
     
     def threatening(self, board):
         if self.getPinned():

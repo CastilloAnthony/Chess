@@ -107,28 +107,29 @@ class Interface():
                                             if threads[currentPos].is_alive():
                                                 threads[currentPos].join()
                                             del threads[currentPos]
-                                        if newGame.checkFuture(currentPos, i):
-                                            validMove = True
-                                        else:
-                                            validMove = False
+                                        # if newGame.checkFuture(currentPos, i):
+                                        #     validMove = True
+                                        # else:
+                                        #     validMove = False
+                                        validMove = True
                                         if validMove:
                                             threads['move'] = Thread(target=newGame.move, name='name', args=(currentPos, i,))
                                             threads['move'].start()
                                             # self.updatePieces(currentPos, i)
                                             currentPos = None
-                                            oneKing = False
+                                            # oneKing = False
                                             newGame.endTurn()
-                                            for j in self.__squares:
-                                                if self.__squares[j].getPiece() != None:
-                                                    if 'king' in self.__squares[j].getPiece():
-                                                        if threads['move'].is_alive():
-                                                            threads['move'].join()
-                                                        threads[self.__squares[j].getPiece()] = newGame.calculateKing(j)
-                                                        if oneKing:
-                                                            break
-                                                        else:
-                                                            oneKing = True
                                             threads.update(newGame.calculateMoves())
+                                            # for j in self.__squares:
+                                            #     if self.__squares[j].getPiece() != None:
+                                            #         if 'king' in self.__squares[j].getPiece():
+                                            #             if threads['move'].is_alive():
+                                            #                 threads['move'].join()
+                                            #             threads[self.__squares[j].getPiece()] = newGame.calculateKing(j)
+                                            #             if oneKing:
+                                            #                 break
+                                            #             else:
+                                            #                 oneKing = True
                                             # print(newGame.checkForPromote())
                                         # if newGame.move(currentPos, i):
                                         #     threads['move'] = Thread(target=newGame.move, name='name', args=(currentPos, i,))
@@ -191,27 +192,27 @@ class Interface():
                 for i in self.__squares:
                     if self.__squares[i].getPiece() != None:
                         if currentPos == i:
+                            screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
+                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
                             if i in threads.values():
                                 if threads[i].is_alive():
                                     threads[i].join()
                                 del threads[i]
-                            screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
-                            screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                            if 'king' in self.__squares[i].getPiece():
-                                if self.__squares[i].getPiece() in threads:
-                                    if threads[self.__squares[i].getPiece()].is_alive():
-                                        threads[self.__squares[i].getPiece()].join()
-                                    del threads[self.__squares[i].getPiece()]
+                            # if 'king' in self.__squares[i].getPiece():
+                            #     if self.__squares[i].getPiece() in threads:
+                            #         if threads[self.__squares[i].getPiece()].is_alive():
+                            #             threads[self.__squares[i].getPiece()].join()
+                            #         del threads[self.__squares[i].getPiece()]
                             # validMove = True
                             # print(newGame.getTokenStatus(i))
                             # print(newGame.getTokenMoves(i))
                             for j in newGame.getTokenMoves(i):
-                                if not newGame.checkFuture(i, j):
-                                        continue
+                                # if not newGame.checkFuture(i, j):
+                                #         continue
                                 if newGame.getBoard()[j] != 'Empty\t\t':
                                     if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(i)['team']:
                                         screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
-                                    else: # This should never happen
+                                    else:
                                         screen.blit(self.__images['dot_b_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
                                 else:
                                     screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))

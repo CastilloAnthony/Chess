@@ -8,7 +8,7 @@ class Knight(Piece):
         super().setTeam(team) # True/False White/Black
         super().setValue(3)
 
-    def listMoves(self, board):
+    def listMoves(self, board, gameState):
         validMoves = []
         if self.getPinned():
             # return validMoves
@@ -84,7 +84,11 @@ class Knight(Piece):
                     if board.getPositionToken(str(x[xPos+2])+str(int(self.getPos()[1])-1)).getName() != 'King':
                         validMoves.append(str(x[xPos+2])+str(int(self.getPos()[1])-1))
         # return validMoves
-        self.setValidMoves(validMoves)     
+        validatedMoves = []
+        for i in validMoves:
+            if gameState.checkFuture(self.getPos(), i):
+                validatedMoves.append(i)
+        self.setValidMoves(validatedMoves)        
     
     def threatening(self, board):
         threat = []

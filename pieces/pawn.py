@@ -1,5 +1,5 @@
 from pieces.piece import Piece
-
+from copy import deepcopy
 class Pawn(Piece):
     def __init__(self, team:bool):
         super().__init__()
@@ -19,7 +19,7 @@ class Pawn(Piece):
     def flipEnPassant(self):
         self.__enPassant = False
 
-    def listMoves(self, board):
+    def listMoves(self, board, gameState):
         validMoves = []
         if self.getPinned():
             # return validMoves
@@ -135,7 +135,11 @@ class Pawn(Piece):
                                                     validMoves.append(x[xPos+1]+str(int(self.getPos()[1])-1))
                                                     self.__enPassant = True
         # return validMoves
-        self.setValidMoves(validMoves)     
+        validatedMoves = []
+        for i in validMoves:
+            if gameState.checkFuture(self.getPos(), i):
+                validatedMoves.append(i)
+        self.setValidMoves(validatedMoves)     
         
     def threatening(self, board):
         threat = []

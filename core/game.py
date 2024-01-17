@@ -145,10 +145,10 @@ class Game():
     def displayScore(self):
         print('\t--- Score ---\n' + 'White: ' + str(self.__board.getScore()[True]) + '\nBlack: ' + str(self.__board.getScore()[False]))
 
-    def findChecks(self):
-        for i in self.__board:
-            if self.__board.getPositionToken(i) != None:
-                pass
+    # def findChecks(self):
+    #     for i in self.__board:
+    #         if self.__board.getPositionToken(i) != None:
+    #             pass
 
     def calculateThreats(self):
         self.__board.calculateThreats()
@@ -166,14 +166,14 @@ class Game():
             self.__currentTurn = True
 
     def findChecks(self):
-        return self.__board.findChecks()
+        return self.__board.findChecks(self.__currentTurn)
     
     def checkFuture(self, startPos, endPos):
         tempBoard = deepcopy(self.__board)
         tempBoard.movePiece(startPos, endPos)
-        checked = tempBoard.findChecks()
+        checked = tempBoard.findChecks(self.__currentTurn)
         if checked != False:
-            if checked['team'] == self.__currentTurn:
+            if checked['team'] == self.__board.getPositionToken(startPos).getTeam(): #self.__currentTurn:
                 return False # Invalid Move
             else:
                 return True # Valid Move
@@ -203,5 +203,5 @@ class Game():
         # self.__board.promote(position, desiredPiece='Queen')
 
     def calculateMoves(self):
-        return self.__board.calculateMoves()
+        return self.__board.calculateMoves(deepcopy(self))
 # end Game

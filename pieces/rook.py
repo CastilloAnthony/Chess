@@ -7,7 +7,7 @@ class Rook(Piece):
         super().setTeam(team) # True/False White/Black
         super().setValue(5)
 
-    def listMoves(self, board):
+    def listMoves(self, board, gameState):
         validMoves = []
         if self.getPinned():
             # return validMoves
@@ -64,7 +64,11 @@ class Rook(Piece):
                 else:
                     break
         # return validMoves
-        self.setValidMoves(validMoves)   
+        validatedMoves = []
+        for i in validMoves:
+            if gameState.checkFuture(self.getPos(), i):
+                validatedMoves.append(i)
+        self.setValidMoves(validatedMoves)      
     
     def threatening(self, board):
         threat = []
