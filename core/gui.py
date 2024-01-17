@@ -204,6 +204,24 @@ class Interface():
                 # Draw Pieces and dots
                 # if threads['move'].is_alive():
                 #     threads['move'].join()
+                if currentPos != None:
+                    if currentPos in threads.values():
+                        if threads[currentPos].is_alive():
+                            threads[currentPos].join()
+                        del threads[currentPos]
+                    screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
+                    # screen.blit(self.__images[self.__squares[currentPos].getPiece()], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
+                    for j in newGame.getTokenMoves(currentPos):
+                        # if not newGame.checkFuture(i, j):
+                        #         continue
+                        if newGame.getBoard()[j] != 'Empty\t\t':
+                            if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(currentPos)['team']:
+                                screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
+                                # screen.blit(self.__images[self.__squares[j].getPiece()], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
+                            else:
+                                screen.blit(self.__images['dot_b_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
+                        else:
+                            screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))
                 for i in self.__squares:
                     if self.__squares[i].getPiece() != None:
                         screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
@@ -235,24 +253,6 @@ class Interface():
                             #         screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))
                         # else:
                         #     screen.blit(self.__images[self.__squares[i].getPiece()], (self.__squares[i].getStats()[0], self.__squares[i].getStats()[1]))
-                if currentPos != None:
-                    if currentPos in threads.values():
-                        if threads[currentPos].is_alive():
-                            threads[currentPos].join()
-                        del threads[currentPos]
-                    screen.blit(self.__images['dot_b_half'], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
-                    screen.blit(self.__images[self.__squares[currentPos].getPiece()], (self.__squares[currentPos].getStats()[0], self.__squares[currentPos].getStats()[1]))
-                    for j in newGame.getTokenMoves(currentPos):
-                        # if not newGame.checkFuture(i, j):
-                        #         continue
-                        if newGame.getBoard()[j] != 'Empty\t\t':
-                            if newGame.getTokenStatus(j)['team'] != newGame.getTokenStatus(currentPos)['team']:
-                                screen.blit(self.__images['dot_r_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
-                                screen.blit(self.__images[self.__squares[j].getPiece()], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
-                            else:
-                                screen.blit(self.__images['dot_b_half'], (self.__squares[j].getStats()[0], self.__squares[j].getStats()[1]))
-                        else:
-                            screen.blit(self.__images['dot_g_half'], (self.__squares[j].getStats()[0]+self.__res_factor/4, self.__squares[j].getStats()[1]+self.__res_factor/4))
                 # Update screen
                 pygame.display.flip()
             # Limits FPS to 60
